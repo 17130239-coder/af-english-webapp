@@ -15,6 +15,7 @@ interface UseCardsReturn {
   updateCard: (id: string, dto: UpdateCardDTO) => Promise<void>;
   toggleFavorite: (id: string, isFav: boolean) => Promise<void>;
   deleteCard: (id: string) => Promise<void>;
+  exportCards: () => boolean;
 }
 
 export function useCards(): UseCardsReturn {
@@ -146,6 +147,18 @@ export function useCards(): UseCardsReturn {
     }
   }, [cards]);
 
+  const exportCards = useCallback((): boolean => {
+    if (cards.length === 0) return false;
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cards, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `af-english-${new Date().toISOString().split('T')[0]}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    return true;
+  }, [cards]);
+
   return {
     cards,
     stats,
@@ -157,5 +170,6 @@ export function useCards(): UseCardsReturn {
     updateCard,
     toggleFavorite,
     deleteCard,
+    exportCards,
   };
 }
