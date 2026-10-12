@@ -10,7 +10,23 @@ const filterUseCase = new FilterCardsUseCase();
 const statsUseCase = new CalculateStatsUseCase();
 
 export function useCardFilters(cards: SubtitleCard[]) {
-  const [filters, setFilters] = useState<CardFilterState>(DEFAULT_FILTER_STATE);
+  const [filters, setFilters] = useState<CardFilterState>(() => {
+    let savedLayout: CardFilterState['layoutMode'] = DEFAULT_FILTER_STATE.layoutMode;
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('af_layout_mode');
+        if (stored === 'grid' || stored === 'tape' || stored === 'compact') {
+          savedLayout = stored;
+        }
+      } catch {
+        // silent
+      }
+    }
+    return {
+      ...DEFAULT_FILTER_STATE,
+      layoutMode: savedLayout,
+    };
+  });
 
   const filteredCards = useMemo(() => {
     return filterUseCase.execute(cards, filters);
@@ -25,11 +41,21 @@ export function useCardFilters(cards: SubtitleCard[]) {
   }, [cards]);
 
   const updateFilters = (changes: Partial<CardFilterState>) => {
+    if (changes.layoutMode && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('af_layout_mode', changes.layoutMode);
+      } catch {
+        // silent
+      }
+    }
     setFilters((prev) => ({ ...prev, ...changes }));
   };
 
   const resetFilters = () => {
-    setFilters(DEFAULT_FILTER_STATE);
+    setFilters((prev) => ({
+      ...DEFAULT_FILTER_STATE,
+      layoutMode: prev.layoutMode,
+    }));
   };
 
   const isFiltered =
