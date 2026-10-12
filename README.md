@@ -2,67 +2,91 @@
 
 Trang web ứng dụng Next.js trực quan hóa, tra cứu và luyện tập flashcard từ vựng tiếng Anh được thu thập thông minh từ tiện ích **AF English Extension** (`af-english`) qua phụ đề YouTube.
 
----
-
-## ✨ Điểm Nổi Bật
-
-- **Đồng bộ thời gian thực với Neon Postgres Cloud**: Kết nối trực tiếp tới cơ sở dữ liệu serverless Neon, tải toàn bộ thẻ từ vựng đã lưu trên YouTube.
-- **Thiết kế tối giản & Hiện đại (Clean & Simple UI)**:
-  - Giao diện trực quan, nhẹ nhàng, tối ưu khả năng đọc.
-  - Phân loại rõ ràng: Câu tiếng Anh gốc, cụm từ trọng tâm (*Key Phrase*), bản dịch tiếng Việt, từ đồng nghĩa (*Synonyms*), giải thích ngữ pháp, và các ví dụ minh họa theo ngữ cảnh (*Giao tiếp, Công việc, Đời sống*).
-- **Phát âm chuẩn bản xứ (Audio TTS)**:
-  - Tích hợp Web Speech API chất lượng cao để nghe phát âm ngay tức thì cho từng câu, từng cụm từ và ví dụ.
-- **Nhảy trực tiếp đến vị trí video trên YouTube**:
-  - Tự động nhận diện và phân tích tham số thời gian (`&t=...s`), hiển thị nhãn thời gian nổi bật (ví dụ: `12:27`) giúp mở ngay video YouTube tại đúng giây nói câu đó.
-- **Chế độ học Flashcard (Spaced Repetition & Active Recall)**:
-  - Luyện tập ghi nhớ từ vựng với giao diện thẻ lật tập trung, hỗ trợ phím tắt `Space` để lật mặt sau, mũi tên `Trái/Phải` để chuyển thẻ, tính năng xáo trộn (shuffle) và đánh dấu sao.
-- **Tìm kiếm & Bộ lọc nhanh**:
-  - Tìm kiếm toàn văn (cả tiếng Anh, tiếng Việt, cụm từ và tên video).
-  - Lọc theo trạng thái: *Tất cả*, *Yêu thích ⭐*, *Đã dịch AI*, *Chưa dịch*.
-  - Lọc theo từng Video nguồn.
-  - Sắp xếp: *Mới nhất*, *Cũ nhất*, *A → Z*.
-- **Xuất & Sao lưu dữ liệu**:
-  - Hỗ trợ xuất toàn bộ dữ liệu ra định dạng chuẩn JSON để lưu trữ hoặc nhập vào các công cụ học tập như Anki, Notion.
+Dự án đã được tái cấu trúc hoàn chỉnh theo các nguyên lý **Clean Architecture**, **SOLID principles**, và **Clean Code**.
 
 ---
 
 ## 🏛️ Kiến Trúc Mã Nguồn (Clean Architecture)
 
-Dự án tuân theo tiêu chuẩn **Clean Architecture** và nguyên lý phân tách trách nhiệm (Separation of Concerns):
+Hệ thống được tổ chức thành 4 phân tầng độc lập theo chuẩn Clean Architecture:
 
 ```
-af-english-webapp/
-├── src/
-│   ├── types/                     # [Domain Layer] Entity & Value Objects
-│   │   ├── card.ts                # SubtitleCard, CardExample, DTOs
-│   │   └── filter.ts              # CardFilterState, SortOrder
-│   ├── lib/
-│   │   ├── config.ts              # Cấu hình môi trường & hằng số hệ thống
-│   │   ├── db/
-│   │   │   └── neon.ts            # Kết nối Neon Serverless Database Client
-│   │   ├── repositories/          # [Data Layer] Trừu tượng hóa truy cập dữ liệu
-│   │   │   ├── card-repository.interface.ts # Interface ICardRepository
-│   │   │   └── neon-card-repository.ts     # Triển khai repository truy vấn Neon Postgres
-│   │   ├── services/              # [Application / Use Case Layer]
-│   │   │   └── card-service.ts    # Logic lọc, thống kê, phân loại và thao tác thẻ
-│   │   └── utils/                 # Tiện ích chung
-│   │       ├── formatters.ts      # Parse timestamp YouTube, highlight từ vựng
-│   │       └── speech.ts          # Web Speech Synthesis API
-│   ├── components/                # [Presentation Layer] UI Components
-│   │   ├── ui/                    # Base components: Button, Input, Modal, Badge, Toast
-│   │   ├── layout/                # Header, Footer
-│   │   ├── stats/                 # Thống kê tổng quan số liệu
-│   │   ├── filters/               # Thanh tìm kiếm & bộ lọc
-│   │   ├── cards/                 # CardItem, CardGrid, Skeletons, Add & Edit Modals
-│   │   └── study/                 # Flashcard Study Mode
-│   └── app/                       # Next.js App Router
-│       ├── api/cards/             # RESTful API endpoints
-│       │   ├── route.ts           # GET all cards, POST create card
-│       │   └── [id]/route.ts      # PATCH update/favorite, DELETE card
-│       ├── layout.tsx
-│       ├── page.tsx
-│       └── globals.css
+src/
+├── core/                                   # [Domain & Application Core Layer]
+│   ├── entities/                           # Domain Entities & Value Objects (Hoàn toàn độc lập với UI/DB)
+│   │   ├── card.entity.ts                  # SubtitleCard, CardExample, CardStats, CardStatus
+│   │   └── filter.entity.ts                # CardFilterState, LayoutMode, ThemeMode
+│   ├── dtos/                               # Data Transfer Objects
+│   │   └── card.dto.ts                     # CreateCardDTO, UpdateCardDTO
+│   ├── errors/                             # Domain Errors
+│   │   └── domain.error.ts                 # DomainError, ValidationError, CardNotFoundError, DatabaseError
+│   ├── repositories/                       # Port Interfaces (Inversion of Control)
+│   │   └── card.repository.interface.ts    # ICardRepository
+│   └── use-cases/                          # Application Business Rules (Single Responsibility Use Cases)
+│       ├── get-cards.use-case.ts           # GetCardsUseCase
+│       ├── get-card-by-id.use-case.ts      # GetCardByIdUseCase
+│       ├── create-card.use-case.ts         # CreateCardUseCase
+│       ├── update-card.use-case.ts         # UpdateCardUseCase
+│       ├── delete-card.use-case.ts         # DeleteCardUseCase
+│       ├── toggle-favorite.use-case.ts     # ToggleFavoriteUseCase
+│       ├── calculate-stats.use-case.ts     # CalculateStatsUseCase (Pure calculation)
+│       └── filter-cards.use-case.ts        # FilterCardsUseCase (Pure filtering & sorting)
+│
+├── infrastructure/                         # [Infrastructure / Data Layer]
+│   ├── config/                             # Cấu hình môi trường
+│   │   └── env.config.ts                   # Validated environment config & fallbacks
+│   ├── database/                           # Kết nối & Chuyển đổi dữ liệu
+│   │   ├── neon.client.ts                  # Neon Serverless Postgres Client
+│   │   └── card.mapper.ts                  # CardMapper (Chuyển đổi Raw DB Row <-> Domain Entity)
+│   ├── repositories/                       # Implementation của ICardRepository
+│   │   └── neon-card.repository.ts         # NeonCardRepository
+│   ├── services/                           # Adapters cho dịch vụ bên ngoài
+│   │   └── speech-synthesis.service.ts     # SpeechSynthesisService (Web Speech API)
+│   └── di/                                 # Dependency Injection Composition Root
+│       └── container.ts                    # Container nối Use Cases với Repositories
+│
+├── presentation/                           # [Presentation Layer]
+│   ├── hooks/                              # Custom React Hooks tách biệt hoàn toàn state & logic
+│   │   ├── useCards.ts                     # Quản lý dữ liệu thẻ, mutations, optimistic updates
+│   │   ├── useCardFilters.ts               # Quản lý bộ lọc, tìm kiếm, lưu layoutMode vào storage
+│   │   ├── useFlashcards.ts                # Quản lý học flashcard, lật thẻ, phím tắt
+│   │   └── useSpeech.ts                    # Quản lý phát âm giọng nói Web Speech API
+│   ├── components/                         # UI Components
+│   │   ├── ui/                             # Button, Input, Modal, Badge, Toast
+│   │   ├── layout/                         # Header (Theme switch, actions), Footer
+│   │   ├── stats/                          # StatsSummary (5 metrics thẻ học)
+│   │   ├── filters/                        # FilterBar (Tìm kiếm, video selector, tabs, sort, layout switch)
+│   │   ├── cards/                          # CardItem (Grid / Tape / Compact), CardGrid, Skeletons, Modals
+│   │   └── study/                          # FlashcardModal (Active recall & Spaced Repetition)
+│   └── utils/
+│       └── formatters.ts                   # Parse timestamp YouTube, highlight từ vựng, format thời gian
+│
+└── app/                                    # [Transport / Next.js App Router]
+    ├── api/cards/
+    │   ├── route.ts                        # GET (list & stats), POST (create)
+    │   └── [id]/route.ts                   # GET (detail), PATCH (update & favorite), DELETE
+    ├── layout.tsx
+    ├── page.tsx
+    └── globals.css
 ```
+
+---
+
+## ✨ Điểm Nổi Bật Về Coding Standard & Clean Code
+
+1. **Tuân thủ Clean Architecture**:
+   - Tầng Core Domain không phụ thuộc vào Next.js, React hay Database.
+   - Các Use Case tuân theo nguyên lý **Single Responsibility Principle (SRP)**.
+   - Dependency Inversion Principle: `ICardRepository` làm cổng giao tiếp, `NeonCardRepository` là adapter cụ thể được inject qua `Container`.
+2. **Quản lý State tinh gọn**:
+   - Toàn bộ logic thao tác dữ liệu được gói gọn trong hook `useCards` và `useCardFilters`.
+   - `page.tsx` chỉ đóng vai trò trình diễn giao diện, cực kỳ ngắn gọn, dễ đọc và dễ bảo trì.
+3. **Giao diện người dùng tối giản & hiện đại (Simple & Clean UI)**:
+   - Hỗ trợ 3 chế độ xem: **Lưới (Grid)**, **Danh sách (Tape)**, và **Thu gọn (Compact)**.
+   - Hỗ trợ đầy đủ **Dark / Light mode** mượt mà.
+   - Thao tác nhanh với phím tắt: `⌘K` tìm kiếm, `Space` lật thẻ Flashcard, `A/D` hoặc mũi tên để chuyển thẻ.
+4. **Đồng bộ trực tiếp Cloud**:
+   - Kết nối tới Neon Postgres Cloud của AF Extension qua kết nối serverless bảo mật.
 
 ---
 
@@ -73,14 +97,18 @@ af-english-webapp/
    npm install
    ```
 
-2. Tạo file `.env.local` (nếu chưa có):
+2. Tạo file `.env.local`:
    ```env
    DATABASE_URL=postgresql://neondb_owner:npg_yXc2iSbMx1IK@ep-super-cake-az82uvk1-pooler.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
    ```
 
-3. Khởi chạy môi trường phát triển:
+3. Khởi chạy dev server:
    ```bash
    npm run dev
    ```
 
-4. Mở trình duyệt tại [http://localhost:3000](http://localhost:3000).
+4. Kiểm tra lint & build:
+   ```bash
+   npm run lint
+   npm run build
+   ```
