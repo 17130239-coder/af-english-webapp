@@ -8,7 +8,6 @@ import { useCardFilters } from '@/presentation/hooks/useCardFilters';
 import { useTheme } from '@/lib/hooks/useTheme';
 import { ToastProvider, useToast } from '@/components/ui/Toast';
 import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
 import { StatsSummary } from '@/components/stats/StatsSummary';
 import { FilterBar } from '@/components/filters/FilterBar';
 import { CardGrid } from '@/components/cards/CardGrid';
@@ -144,8 +143,6 @@ function MainApp() {
           />
         )}
       </main>
-
-      <Footer />
 
       {/* Modals */}
       <AddCardModal
