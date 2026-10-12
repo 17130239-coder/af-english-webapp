@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Search, X, LayoutGrid, Rows3, StretchHorizontal, ChevronDown } from 'lucide-react';
+import { Search, X, LayoutGrid, List, AlignJustify, ChevronDown, Film, ArrowUpDown } from 'lucide-react';
 import { CardFilterState, FilterStatus, SortOrder, LayoutMode } from '@/types/filter';
 import { CardStats } from '@/types/card';
 
@@ -14,58 +14,62 @@ interface FilterBarProps {
 
 export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) {
   const tabs: Array<{ id: FilterStatus; label: string; count: number }> = [
-    { id: 'all', label: 'Tất cả câu', count: stats.total },
-    { id: 'favorites', label: '★ Yêu thích', count: stats.favorites },
-    { id: 'translated', label: 'Đã dịch nghĩa', count: stats.translated },
+    { id: 'all', label: 'Tất cả', count: stats.total },
+    { id: 'favorites', label: 'Yêu thích', count: stats.favorites },
+    { id: 'translated', label: 'Đã dịch', count: stats.translated },
     { id: 'pending', label: 'Chờ dịch', count: stats.pending },
   ];
 
   const layoutOptions: Array<{ id: LayoutMode; label: string; icon: typeof LayoutGrid }> = [
     { id: 'grid', label: 'Lưới', icon: LayoutGrid },
-    { id: 'tape', label: 'Danh sách', icon: Rows3 },
-    { id: 'compact', label: 'Thu gọn', icon: StretchHorizontal },
+    { id: 'tape', label: 'Danh sách', icon: List },
+    { id: 'compact', label: 'Bảng gọn', icon: AlignJustify },
   ];
 
   return (
-    <div className="space-y-4 mb-6 font-sans select-none">
-      {/* Top Filter Controls: Search + Video Select + Sort */}
-      <div className="flex flex-col sm:flex-row gap-3">
-        {/* Search Input (Pill rounded Phoenix style) */}
+    <div className="space-y-3 mb-5 font-sans select-none">
+      {/* Search Bar + Controls */}
+      <div className="flex flex-col sm:flex-row gap-2.5">
+        {/* Search Input */}
         <div className="relative flex-1">
-          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[#6e7891] dark:text-[#8a94ad]">
+          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-faint)]">
             <Search className="w-4 h-4" />
           </div>
           <input
             type="text"
             value={filters.searchQuery}
             onChange={(e) => onChange({ searchQuery: e.target.value })}
-            aria-label="Tìm kiếm"
-            className="w-full pl-10 pr-20 py-2.5 text-xs sm:text-sm bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-full text-[#1b1e28] dark:text-[#f4f5f8] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 transition-all shadow-2xs"
+            placeholder="Tìm theo từ tiếng Anh, bản dịch hoặc tên video..."
+            aria-label="Tìm kiếm thẻ từ vựng"
+            className="w-full pl-9.5 pr-14 py-2 text-xs sm:text-sm bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl text-[var(--text-main)] placeholder-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all shadow-2xs"
           />
           {filters.searchQuery ? (
             <button
               type="button"
               onClick={() => onChange({ searchQuery: '' })}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#6b7285] hover:text-[#1b1e28] dark:hover:text-white rounded-full cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[var(--text-muted)] hover:text-[var(--text-main)] rounded-md cursor-pointer"
               title="Xoá tìm kiếm"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-block absolute right-3.5 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[10px] font-mono text-[#6b7285] dark:text-[#7d8498] bg-[#f1f3f7] dark:bg-[#252730] border border-[#e2e5ec] dark:border-[#2f313c] rounded">
+            <kbd className="hidden sm:inline-block absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono text-[var(--text-faint)] bg-[var(--bg-muted)] border border-[var(--border-default)] rounded">
               ⌘K
             </kbd>
           )}
         </div>
 
-        {/* Video Reel Filter & Sort Selectors */}
-        <div className="flex items-center gap-2.5">
+        {/* Video Filter & Sort */}
+        <div className="flex items-center gap-2">
           {videos.length > 0 && (
-            <div className="relative flex-1 sm:w-56">
+            <div className="relative flex-1 sm:w-52">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] pointer-events-none">
+                <Film className="w-3.5 h-3.5" />
+              </div>
               <select
                 value={filters.selectedVideo}
                 onChange={(e) => onChange({ selectedVideo: e.target.value })}
-                className="w-full appearance-none pl-3 pr-8 py-2.5 text-xs bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-lg text-[#3a4052] dark:text-[#f4f5f8] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 cursor-pointer truncate shadow-2xs font-medium"
+                className="w-full appearance-none pl-8 pr-7 py-2 text-xs bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl text-[var(--text-body)] focus:outline-none focus:border-[var(--accent)] cursor-pointer truncate shadow-2xs font-medium"
               >
                 <option value="all">Tất cả video ({videos.length})</option>
                 {videos.map((vid) => (
@@ -74,47 +78,50 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
                   </option>
                 ))}
               </select>
-              <ChevronDown className="w-4 h-4 text-[#6b7285] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+              <ChevronDown className="w-3.5 h-3.5 text-[var(--text-faint)] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
             </div>
           )}
 
-          <div className="relative w-40 shrink-0">
+          <div className="relative w-36 sm:w-40 shrink-0">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] pointer-events-none">
+              <ArrowUpDown className="w-3.5 h-3.5" />
+            </div>
             <select
               value={filters.sortBy}
               onChange={(e) => onChange({ sortBy: e.target.value as SortOrder })}
-              className="w-full appearance-none pl-3 pr-8 py-2.5 text-xs bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-lg text-[#3a4052] dark:text-[#f4f5f8] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 cursor-pointer shadow-2xs font-medium"
+              className="w-full appearance-none pl-8 pr-7 py-2 text-xs bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl text-[var(--text-body)] focus:outline-none focus:border-[var(--accent)] cursor-pointer shadow-2xs font-medium"
             >
-              <option value="newest">Mới nhất trước</option>
-              <option value="oldest">Cũ nhất trước</option>
-              <option value="alphabetical">Bảng chữ cái (A-Z)</option>
+              <option value="newest">Mới nhất</option>
+              <option value="oldest">Cũ nhất</option>
+              <option value="alphabetical">A → Z</option>
             </select>
-            <ChevronDown className="w-4 h-4 text-[#6b7285] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+            <ChevronDown className="w-3.5 h-3.5 text-[var(--text-faint)] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
           </div>
         </div>
       </div>
 
-      {/* Channel Selection Tabs + Layout View Switches */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-        {/* Category Tabs (Phoenix Segmented Tabs) */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+      {/* Tabs Strip & View Switcher */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
+        {/* Category Tabs */}
+        <div className="flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-none">
           {tabs.map((tab) => {
             const isActive = filters.status === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => onChange({ status: tab.id })}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer shrink-0 flex items-center gap-2 ${
+                className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer shrink-0 flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-[#f97316] hover:bg-[#ea580c] text-white shadow-xs'
-                    : 'bg-white dark:bg-[#1c1d23] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] text-[#4b5266] dark:text-[#9da3b4] border border-[#e5e7ee] dark:border-[#2a2c35]'
+                    ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)]'
                 }`}
               >
                 <span>{tab.label}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-bold ${
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-semibold ${
                     isActive
-                      ? 'bg-white/25 text-white'
-                      : 'bg-[#f1f3f7] dark:bg-[#252730] text-[#6b7285] dark:text-[#7d8498]'
+                      ? 'bg-white/20 text-white dark:bg-zinc-900/20 dark:text-zinc-900'
+                      : 'bg-[var(--bg-muted)] text-[var(--text-muted)]'
                   }`}
                 >
                   {tab.count}
@@ -124,25 +131,24 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
           })}
         </div>
 
-        {/* Layout Mode Segmented Control */}
-        <div className="flex items-center p-1 bg-white dark:bg-[#1c1d23] border border-[#e5e7ee] dark:border-[#2a2c35] rounded-lg self-end sm:self-auto shrink-0 shadow-2xs">
+        {/* View Switcher Toggle */}
+        <div className="flex items-center gap-0.5 p-0.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)] self-end sm:self-auto shrink-0">
           {layoutOptions.map((opt) => {
             const Icon = opt.icon;
-            const isSelected = filters.layoutMode === opt.id;
+            const isCurrent = filters.layoutMode === opt.id;
             return (
               <button
                 key={opt.id}
                 type="button"
                 onClick={() => onChange({ layoutMode: opt.id })}
-                className={`px-2.5 py-1 text-xs font-medium rounded-md flex items-center gap-1.5 transition-colors cursor-pointer ${
-                  isSelected
-                    ? 'bg-[#f1f3f7] dark:bg-[#252730] text-[#1b1e28] dark:text-[#f4f5f8] font-semibold shadow-2xs'
-                    : 'text-[#6b7285] dark:text-[#7d8498] hover:text-[#1b1e28] dark:hover:text-white'
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${
+                  isCurrent
+                    ? 'bg-[var(--bg-muted)] text-[var(--text-main)] shadow-2xs font-semibold'
+                    : 'text-[var(--text-faint)] hover:text-[var(--text-main)]'
                 }`}
-                title={`Hiển thị dạng ${opt.label}`}
+                title={`Chế độ xem: ${opt.label}`}
               >
                 <Icon className="w-3.5 h-3.5" />
-                <span className="hidden xs:inline">{opt.label}</span>
               </button>
             );
           })}

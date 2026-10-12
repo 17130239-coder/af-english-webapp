@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { SubtitleCard } from '@/types/card';
 import { LayoutMode } from '@/types/filter';
 import { CardItem } from './CardItem';
-import { SearchX, RotateCcw, ArrowDown, CheckCheck } from 'lucide-react';
+import { SearchX, RotateCcw, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 interface CardGridProps {
@@ -17,7 +17,7 @@ interface CardGridProps {
   layoutMode?: LayoutMode;
 }
 
-const PAGE_CHUNK = 12;
+const PAGE_CHUNK = 15;
 
 export function CardGrid({
   cards,
@@ -28,12 +28,10 @@ export function CardGrid({
   isFiltered = false,
   layoutMode = 'grid',
 }: CardGridProps) {
-  // Lazy Loading progressive stream state
   const [visibleCount, setVisibleCount] = useState(PAGE_CHUNK);
   const [prevTrackCount, setPrevTrackCount] = useState(cards.length);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // Adjust pagination synchronously during render when card list changes
   if (prevTrackCount !== cards.length) {
     setPrevTrackCount(cards.length);
     setVisibleCount(PAGE_CHUNK);
@@ -47,7 +45,6 @@ export function CardGrid({
     setVisibleCount(cards.length);
   }, [cards.length]);
 
-  // IntersectionObserver for auto lazy loading when scrolling
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel || visibleCount >= cards.length) return;
@@ -58,7 +55,7 @@ export function CardGrid({
           loadMore();
         }
       },
-      { rootMargin: '250px' }
+      { rootMargin: '300px' }
     );
 
     observer.observe(sentinel);
@@ -67,30 +64,24 @@ export function CardGrid({
 
   if (cards.length === 0) {
     return (
-      <div className="phoenix-card p-10 sm:p-14 text-center my-6 select-none border-dashed">
-        <div className="w-12 h-12 mx-auto bg-orange-50 dark:bg-orange-950/40 text-[#f97316] rounded-full flex items-center justify-center mb-3">
-          <SearchX className="w-6 h-6 stroke-[2]" />
+      <div className="notebook-card p-10 sm:p-14 text-center my-6 select-none border-dashed">
+        <div className="w-10 h-10 mx-auto bg-[var(--bg-muted)] text-[var(--text-muted)] rounded-full flex items-center justify-center mb-3">
+          <SearchX className="w-5 h-5" />
         </div>
 
-        <h3 className="text-base font-bold text-[#1b1e28] dark:text-[#f4f5f8] mb-1">
-          {isFiltered
-            ? 'Không tìm thấy câu phù hợp'
-            : 'Chưa có dữ liệu từ vựng'}
+        <h3 className="text-base font-semibold text-[var(--text-main)] mb-1">
+          {isFiltered ? 'Không tìm thấy câu phù hợp' : 'Chưa có dữ liệu từ vựng'}
         </h3>
 
-        <p className="text-sm text-[#6e7891] dark:text-[#8a94ad] max-w-md mx-auto mb-5 leading-relaxed">
+        <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-sm mx-auto mb-4 leading-relaxed">
           {isFiltered
-            ? 'Bộ lọc hiện tại không có kết quả nào. Hãy thử thay đổi từ khoá tìm kiếm hoặc đặt lại bộ lọc.'
-            : 'Hệ thống chưa có thẻ từ vựng nào. Bạn có thể thêm câu mới thủ công hoặc trích xuất từ AF Extension.'}
+            ? 'Hãy thử thay đổi từ khoá tìm kiếm hoặc đặt lại các bộ lọc đang chọn.'
+            : 'Các câu lưu từ tiện ích AF Extension trên YouTube sẽ xuất hiện tại đây.'}
         </p>
 
         {isFiltered && onResetFilters && (
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onResetFilters}
-          >
-            <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+          <Button variant="outline" size="sm" onClick={onResetFilters} className="gap-1.5">
+            <RotateCcw className="w-3.5 h-3.5" />
             <span>Đặt lại bộ lọc</span>
           </Button>
         )}
@@ -99,18 +90,16 @@ export function CardGrid({
   }
 
   const visibleCards = cards.slice(0, visibleCount);
-  const streamPercent = Math.round((visibleCards.length / cards.length) * 100);
   const hasMore = visibleCards.length < cards.length;
 
   return (
-    <div className="space-y-6">
-      {/* Cards stream container depending on layout mode */}
+    <div className="space-y-5">
       <div
         className={
           layoutMode === 'grid'
-            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5'
+            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4'
             : layoutMode === 'tape'
-            ? 'flex flex-col space-y-4 max-w-4xl mx-auto'
+            ? 'flex flex-col space-y-3 max-w-3xl mx-auto'
             : 'flex flex-col space-y-2'
         }
       >
@@ -126,51 +115,28 @@ export function CardGrid({
         ))}
       </div>
 
-      {/* Lazy Load Sentinel Trigger */}
-      <div ref={sentinelRef} className="h-2" />
+      <div ref={sentinelRef} className="h-4" />
 
-      {/* Lazy Loading Progress & Actions Bar */}
       {cards.length > PAGE_CHUNK && (
-        <div className="phoenix-card px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-sans select-none">
-          <div className="flex items-center gap-3">
-            <span className="text-[#6b7280] dark:text-[#9ca3af]">
-              Đang hiển thị <strong className="text-[#1b1e28] dark:text-[#f4f5f8] tabular-nums">{visibleCards.length}</strong> / <strong className="text-[#1b1e28] dark:text-[#f4f5f8] tabular-nums">{cards.length}</strong> câu
-            </span>
-            <div className="w-24 h-1.5 bg-[#f1f3f7] dark:bg-[#252730] rounded-full overflow-hidden hidden xs:block">
-              <div
-                className="h-full bg-[#f97316] transition-all duration-200 rounded-full"
-                style={{ width: `${streamPercent}%` }}
-              />
-            </div>
-            <span className="text-[#f97316] dark:text-[#fb923c] font-bold tabular-nums">
-              ({streamPercent}%)
-            </span>
-          </div>
+        <div className="notebook-card px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-sans select-none">
+          <span className="text-[var(--text-muted)]">
+            Hiển thị <strong className="text-[var(--text-main)] tabular-nums">{visibleCards.length}</strong> / <strong className="text-[var(--text-main)] tabular-nums">{cards.length}</strong> câu
+          </span>
 
           <div className="flex items-center gap-2">
             {hasMore ? (
               <>
-                <button
-                  type="button"
-                  onClick={loadMore}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-[#1c1d23] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] text-[#1b1e28] dark:text-[#f4f5f8] border border-[#e5e7ee] dark:border-[#2a2c35] flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
-                >
-                  <ArrowDown className="w-3.5 h-3.5 text-[#f97316]" />
-                  <span>Tải thêm (+{Math.min(PAGE_CHUNK, cards.length - visibleCards.length)})</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={loadAll}
-                  className="px-3 py-1.5 text-xs font-medium rounded-lg text-[#6b7280] hover:text-[#1b1e28] dark:text-[#9ca3af] dark:hover:text-[#f4f5f8] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] cursor-pointer transition-colors"
-                >
-                  <span>Xem tất cả</span>
-                </button>
+                <Button variant="outline" size="sm" onClick={loadMore} className="gap-1.5">
+                  <ArrowDown className="w-3.5 h-3.5 text-[var(--accent)]" />
+                  <span>Tải thêm</span>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={loadAll}>
+                  Xem tất cả
+                </Button>
               </>
             ) : (
-              <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 text-xs">
-                <CheckCheck className="w-4 h-4" />
-                <span>Đã hiển thị toàn bộ {cards.length} câu</span>
+              <span className="text-zinc-500 text-xs">
+                Đã hiển thị toàn bộ {cards.length} câu
               </span>
             )}
           </div>

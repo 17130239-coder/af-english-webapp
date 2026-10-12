@@ -49,7 +49,6 @@ export function CardDetailModal({
     try {
       setIsSubmitting(true);
       await onUpdate(card.id, formData);
-      showToast('Đã cập nhật câu thành công', 'success');
       onClose();
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Lỗi khi cập nhật', 'error');
@@ -62,27 +61,27 @@ export function CardDetailModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Chỉnh sửa từ vựng"
-      description={`Cập nhật nội dung câu và ghi chú (ID: ${card.id.slice(0, 8)})`}
+      title="Chỉnh sửa câu"
+      description="Cập nhật câu tiếng Anh, nghĩa hoặc giải thích"
       maxWidth="lg"
     >
       <form onSubmit={handleSubmit} className="space-y-4 font-sans select-none">
         <div>
-          <label className="block text-xs font-semibold text-[#6b7280] dark:text-[#9ca3af] mb-1.5">
-            Câu tiếng Anh (English Sentence) <span className="text-rose-500">*</span>
+          <label className="block text-xs font-medium text-[var(--text-body)] mb-1.5">
+            Câu tiếng Anh
           </label>
           <textarea
             value={formData.text || ''}
             onChange={(e) => handleChange('text', e.target.value)}
             rows={3}
-            className="w-full px-3 py-2 text-sm bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-lg text-[#1b1e28] dark:text-[#f4f5f8] placeholder-[#9ca3af] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 transition-colors"
+            className="w-full px-3 py-2 text-sm bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl text-[var(--text-main)] placeholder-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors"
             required
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Input
-            label="Từ khoá / Cụm từ trọng tâm"
+            label="Cụm từ trọng tâm"
             value={formData.keyPhrase || ''}
             onChange={(e) => handleChange('keyPhrase', e.target.value)}
           />
@@ -94,53 +93,42 @@ export function CardDetailModal({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-[#6b7280] dark:text-[#9ca3af] mb-1.5">
-            Bản dịch cả câu (Vietnamese Translation)
+          <label className="block text-xs font-medium text-[var(--text-body)] mb-1.5">
+            Bản dịch tiếng Việt
           </label>
           <textarea
             value={formData.translation || ''}
             onChange={(e) => handleChange('translation', e.target.value)}
             rows={2}
-            className="w-full px-3 py-2 text-sm bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-lg text-[#1b1e28] dark:text-[#f4f5f8] placeholder-[#9ca3af] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 transition-colors"
+            className="w-full px-3 py-2 text-sm bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl text-[var(--text-main)] placeholder-[var(--text-faint)] focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-colors"
           />
         </div>
 
         <Input
-          label="Ghi chú ngữ pháp & giải thích"
+          label="Giải thích ngữ pháp & ngữ cảnh"
           value={formData.explanation || ''}
           onChange={(e) => handleChange('explanation', e.target.value)}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Input
-            label="Tiêu đề video YouTube"
+            label="Nguồn video"
             value={formData.videoTitle || ''}
             onChange={(e) => handleChange('videoTitle', e.target.value)}
           />
           <Input
-            label="Link video YouTube"
+            label="Đường link URL"
             value={formData.url || ''}
             onChange={(e) => handleChange('url', e.target.value)}
           />
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#e5e7ee] dark:border-[#2a2c35]">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onClose}
-          >
-            Huỷ bỏ
+        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[var(--border-subtle)]">
+          <Button type="button" variant="ghost" size="sm" onClick={onClose} disabled={isSubmitting}>
+            Hủy
           </Button>
-          <Button
-            type="submit"
-            variant="primary"
-            size="sm"
-            isLoading={isSubmitting}
-          >
-            Cập nhật thay đổi
+          <Button type="submit" variant="primary" size="sm" isLoading={isSubmitting}>
+            Lưu thay đổi
           </Button>
         </div>
       </form>

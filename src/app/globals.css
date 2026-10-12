@@ -1,150 +1,86 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   color-scheme: light;
-  --phoenix-body-bg: #f8f9fb;
-  --phoenix-card-bg: #ffffff;
-  --phoenix-header-bg: #ffffff;
-  --phoenix-border-color: #e5e7ee;
-  --phoenix-border-subtle: #edf0f5;
-  --phoenix-text-heading: #1b1e28;
-  --phoenix-text-body: #3a4052;
-  --phoenix-text-muted: #6b7285;
-  --phoenix-primary: #f97316;
-  --phoenix-primary-hover: #ea580c;
-  --phoenix-primary-subtle: #fff7ed;
-  --phoenix-primary-text: #c2410c;
-  --phoenix-primary-border: #fed7aa;
-  --phoenix-success: #10b981;
-  --phoenix-success-subtle: #ecfdf5;
-  --phoenix-success-text: #047857;
-  --phoenix-success-border: #a7f3d0;
-  --phoenix-warning: #f59e0b;
-  --phoenix-warning-subtle: #fffbeb;
-  --phoenix-warning-text: #b45309;
-  --phoenix-warning-border: #fde68a;
-  --phoenix-danger: #f43f5e;
-  --phoenix-danger-subtle: #fff1f2;
-  --phoenix-danger-text: #be123c;
-  --phoenix-danger-border: #fecdd3;
-  --background: var(--phoenix-body-bg);
-  --foreground: var(--phoenix-text-body);
+  --bg-page: #fbfbfd;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --bg-muted: #f4f4f7;
+  --border-subtle: #f0f0f4;
+  --border-default: #e4e4e9;
+  --border-hover: #d2d2db;
+  --text-main: #18181b;
+  --text-body: #3f3f46;
+  --text-muted: #71717a;
+  --text-faint: #a1a1aa;
+  --accent: #ea580c;
+  --accent-hover: #c2410c;
+  --accent-subtle: #fff7ed;
+  --accent-text: #9a3412;
+  --highlight-bg: #fef3c7;
+  --highlight-text: #78350f;
+  --star-active: #eab308;
 }
 
 .dark {
   color-scheme: dark;
-  --phoenix-body-bg: #141519;
-  --phoenix-card-bg: #1c1d23;
-  --phoenix-header-bg: #1c1d23;
-  --phoenix-border-color: #2a2c35;
-  --phoenix-border-subtle: #23242c;
-  --phoenix-text-heading: #f4f5f8;
-  --phoenix-text-body: #9da3b4;
-  --phoenix-text-muted: #6f7587;
-  --phoenix-primary: #f97316;
-  --phoenix-primary-hover: #fb923c;
-  --phoenix-primary-subtle: rgba(249, 115, 22, 0.12);
-  --phoenix-primary-text: #fb923c;
-  --phoenix-primary-border: rgba(249, 115, 22, 0.25);
-  --phoenix-success: #10b981;
-  --phoenix-success-subtle: rgba(16, 185, 129, 0.12);
-  --phoenix-success-text: #6ee7b7;
-  --phoenix-success-border: rgba(16, 185, 129, 0.25);
-  --phoenix-warning: #f59e0b;
-  --phoenix-warning-subtle: rgba(245, 158, 11, 0.12);
-  --phoenix-warning-text: #fcd34d;
-  --phoenix-warning-border: rgba(245, 158, 11, 0.25);
-  --phoenix-danger: #f43f5e;
-  --phoenix-danger-subtle: rgba(244, 63, 94, 0.12);
-  --phoenix-danger-text: #fda4af;
-  --phoenix-danger-border: rgba(244, 63, 94, 0.25);
-  --background: var(--phoenix-body-bg);
-  --foreground: var(--phoenix-text-body);
+  --bg-page: #0f1013;
+  --bg-card: #17181c;
+  --bg-card-hover: #1b1c22;
+  --bg-muted: #202228;
+  --border-subtle: #22242a;
+  --border-default: #2a2d35;
+  --border-hover: #383c47;
+  --text-main: #f4f4f5;
+  --text-body: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --text-faint: #71717a;
+  --accent: #f97316;
+  --accent-hover: #fb923c;
+  --accent-subtle: rgba(249, 115, 22, 0.12);
+  --accent-text: #fb923c;
+  --highlight-bg: rgba(245, 158, 11, 0.16);
+  --highlight-text: #fde68a;
+  --star-active: #facc15;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--phoenix-primary);
+  --color-page: var(--bg-page);
+  --color-card: var(--bg-card);
+  --color-accent: var(--accent);
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--phoenix-body-bg);
-  color: var(--phoenix-text-body);
+  background-color: var(--bg-page);
+  color: var(--text-body);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Phoenix Badges */
-.badge-phoenix {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  border-width: 1px;
+/* Subtle Notebook Card Styling */
+.notebook-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 0.875rem;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.badge-phoenix-primary {
-  background-color: var(--phoenix-primary-subtle);
-  color: var(--phoenix-primary-text);
-  border-color: var(--phoenix-primary-border);
+.notebook-card:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-card-hover);
 }
 
-.badge-phoenix-success {
-  background-color: var(--phoenix-success-subtle);
-  color: var(--phoenix-success-text);
-  border-color: var(--phoenix-success-border);
-}
-
-.badge-phoenix-warning {
-  background-color: var(--phoenix-warning-subtle);
-  color: var(--phoenix-warning-text);
-  border-color: var(--phoenix-warning-border);
-}
-
-.badge-phoenix-danger {
-  background-color: var(--phoenix-danger-subtle);
-  color: var(--phoenix-danger-text);
-  border-color: var(--phoenix-danger-border);
-}
-
-.badge-phoenix-secondary {
-  background-color: var(--phoenix-border-subtle);
-  color: var(--phoenix-text-muted);
-  border-color: var(--phoenix-border-color);
-}
-
-/* Phoenix Card Substrate */
-.phoenix-card {
-  background-color: var(--phoenix-card-bg);
-  border: 1px solid var(--phoenix-border-color);
-  border-radius: 0.75rem;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.phoenix-card:hover {
-  border-color: #cbd2df;
-}
-
-.dark .phoenix-card:hover {
-  border-color: #3b3e4c;
-}
-
-/* Subtle Scrollbar conforming to Evondev UI/UX principles */
+/* Smooth Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -152,14 +88,14 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd2df;
+  background: #d4d4d8;
   border-radius: 9999px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #333644;
+  background: #3f3f46;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9aa1b4;
+  background: #a1a1aa;
 }
