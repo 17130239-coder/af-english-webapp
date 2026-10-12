@@ -34,12 +34,6 @@ export function Header({
             <h1 className="text-base sm:text-lg font-bold text-[#1b1e28] dark:text-[#f4f5f8] leading-tight truncate">
               AF English
             </h1>
-            <span
-              title="Phiên bản Pro"
-              className="badge-phoenix badge-phoenix-primary text-[10px] hidden xs:inline-flex cursor-help"
-            >
-              PRO
-            </span>
           </div>
         </div>
 
