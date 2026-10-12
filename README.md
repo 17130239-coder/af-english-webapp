@@ -422,9 +422,12 @@ npm run dev
 ```
 Mở trình duyệt tại địa chỉ: [http://localhost:3000](http://localhost:3000)
 
-### 5. Kiểm tra chất lượng mã nguồn & Build
+### 5. Kiểm tra chất lượng mã nguồn & Kiểm thử (Testing)
 ```bash
-# Kiểm tra linting
+# Chạy bộ kiểm thử tự động Unit Tests (Vitest - 33 tests)
+npm test
+
+# Kiểm tra linting tiêu chuẩn
 npm run lint
 
 # Tạo bản build tối ưu hóa cho môi trường production
