@@ -2,29 +2,42 @@ import React from 'react';
 
 interface BadgeProps {
   children: React.ReactNode;
-  variant?: 'default' | 'success' | 'warning' | 'info' | 'purple' | 'neutral';
+  variant?: 'default' | 'success' | 'warning' | 'info' | 'purple' | 'neutral' | 'danger';
   className?: string;
   size?: 'sm' | 'md';
 }
 
-export function Badge({ children, variant = 'default', size = 'sm', className = '' }: BadgeProps) {
+export function Badge({
+  children,
+  variant = 'default',
+  size = 'sm',
+  className = '',
+}: BadgeProps) {
   const variantStyles = {
-    default: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700',
-    success: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
-    warning: 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border-amber-200 dark:border-amber-800',
-    info: 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border-blue-200 dark:border-blue-800',
-    purple: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800',
-    neutral: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700',
+    default:
+      'bg-[#fff1eb] text-[#9a3412] border-[#fed7aa] dark:bg-[#2b170e] dark:text-[#fb923c] dark:border-[#6c3216]',
+    success:
+      'bg-[#d9fbd0] text-[#1c6c09] border-[#90d67f] dark:bg-[#1d2527] dark:text-[#90d67f] dark:border-[#354739]',
+    warning:
+      'bg-[#ffefca] text-[#bc3803] border-[#ffcc85] dark:bg-[#262527] dark:text-[#ffcc85] dark:border-[#51453a]',
+    danger:
+      'bg-[#ffe0db] text-[#b81800] border-[#f48270] dark:bg-[#241f25] dark:text-[#f48270] dark:border-[#4c3233]',
+    info:
+      'bg-[#c7ebff] text-[#005585] border-[#60c6ff] dark:bg-[#1a2431] dark:text-[#60c6ff] dark:border-[#29435a]',
+    purple:
+      'bg-[#f2e7fe] text-[#581c87] border-[#d8b4fe] dark:bg-[#271d3b] dark:text-[#c084fc] dark:border-[#4c1d95]',
+    neutral:
+      'bg-[#eff2f6] text-[#525b75] border-[#cbd0dd] dark:bg-[#222834] dark:text-[#cbd0dd] dark:border-[#3d414c]',
   };
 
   const sizeStyles = {
-    sm: 'text-xs px-2 py-0.5',
+    sm: 'text-[11px] px-2 py-0.5',
     md: 'text-xs px-2.5 py-1',
   };
 
   return (
     <span
-      className={`inline-flex items-center gap-1 font-medium border rounded-md transition-colors ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={`inline-flex items-center gap-1 font-semibold uppercase tracking-wider border rounded-md transition-colors ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
     >
       {children}
     </span>

@@ -1,26 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,400;1,6..12,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --phoenix-body-bg: #f5f7fa;
+  --phoenix-card-bg: #ffffff;
+  --phoenix-header-bg: #ffffff;
+  --phoenix-border-color: #e3e6ed;
+  --phoenix-border-subtle: #eff2f6;
+  --phoenix-text-heading: #141824;
+  --phoenix-text-body: #31374a;
+  --phoenix-text-muted: #6e7891;
+  --phoenix-primary: #ea580c;
+  --phoenix-primary-hover: #c2410c;
+  --phoenix-primary-subtle: #fff1eb;
+  --phoenix-primary-text: #9a3412;
+  --phoenix-primary-border: #fed7aa;
+  --phoenix-success: #25b003;
+  --phoenix-success-subtle: #d9fbd0;
+  --phoenix-success-text: #1c6c09;
+  --phoenix-success-border: #90d67f;
+  --phoenix-warning: #e5780b;
+  --phoenix-warning-subtle: #ffefca;
+  --phoenix-warning-text: #bc3803;
+  --phoenix-warning-border: #ffcc85;
+  --phoenix-danger: #fa3b1d;
+  --phoenix-danger-subtle: #ffe0db;
+  --phoenix-danger-text: #b81800;
+  --phoenix-danger-border: #f48270;
+  --background: var(--phoenix-body-bg);
+  --foreground: var(--phoenix-text-body);
+}
+
+.dark {
+  color-scheme: dark;
+  --phoenix-body-bg: #0f111a;
+  --phoenix-card-bg: #141824;
+  --phoenix-header-bg: #141824;
+  --phoenix-border-color: #272f3d;
+  --phoenix-border-subtle: #1c2231;
+  --phoenix-text-heading: #eff2f6;
+  --phoenix-text-body: #9fa6bc;
+  --phoenix-text-muted: #6e7891;
+  --phoenix-primary: #ea580c;
+  --phoenix-primary-hover: #fb923c;
+  --phoenix-primary-subtle: #2b170e;
+  --phoenix-primary-text: #fb923c;
+  --phoenix-primary-border: #6c3216;
+  --phoenix-success: #25b003;
+  --phoenix-success-subtle: #1d2527;
+  --phoenix-success-text: #90d67f;
+  --phoenix-success-border: #354739;
+  --phoenix-warning: #e5780b;
+  --phoenix-warning-subtle: #262527;
+  --phoenix-warning-text: #ffcc85;
+  --phoenix-warning-border: #51453a;
+  --phoenix-danger: #fa3b1d;
+  --phoenix-danger-subtle: #241f25;
+  --phoenix-danger-text: #f48270;
+  --phoenix-danger-border: #4c3233;
+  --background: var(--phoenix-body-bg);
+  --foreground: var(--phoenix-text-body);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--phoenix-primary);
+  --font-sans: 'Nunito Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-color: var(--phoenix-body-bg);
+  color: var(--phoenix-text-body);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Phoenix Badges */
+.badge-phoenix {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border-width: 1px;
+}
+
+.badge-phoenix-primary {
+  background-color: var(--phoenix-primary-subtle);
+  color: var(--phoenix-primary-text);
+  border-color: var(--phoenix-primary-border);
+}
+
+.badge-phoenix-success {
+  background-color: var(--phoenix-success-subtle);
+  color: var(--phoenix-success-text);
+  border-color: var(--phoenix-success-border);
+}
+
+.badge-phoenix-warning {
+  background-color: var(--phoenix-warning-subtle);
+  color: var(--phoenix-warning-text);
+  border-color: var(--phoenix-warning-border);
+}
+
+.badge-phoenix-danger {
+  background-color: var(--phoenix-danger-subtle);
+  color: var(--phoenix-danger-text);
+  border-color: var(--phoenix-danger-border);
+}
+
+.badge-phoenix-secondary {
+  background-color: var(--phoenix-border-subtle);
+  color: var(--phoenix-text-muted);
+  border-color: var(--phoenix-border-color);
+}
+
+/* Phoenix Card Substrate */
+.phoenix-card {
+  background-color: var(--phoenix-card-bg);
+  border: 1px solid var(--phoenix-border-color);
+  border-radius: 0.625rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.phoenix-card:hover {
+  border-color: #cbd0dd;
+}
+
+.dark .phoenix-card:hover {
+  border-color: #3e465b;
+}
+
+/* Subtle Scrollbar conforming to Evondev UI/UX principles */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd0dd;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #373e53;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9fa6bc;
 }

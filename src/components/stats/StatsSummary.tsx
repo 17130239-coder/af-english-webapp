@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardStats } from '@/types/card';
-import { BookOpen, Sparkles, Star, Clock, Video } from 'lucide-react';
+import { BookOpen, CheckCircle, Star, Video } from 'lucide-react';
 
 interface StatsSummaryProps {
   stats: CardStats;
@@ -8,67 +8,83 @@ interface StatsSummaryProps {
 }
 
 export function StatsSummary({ stats, isLoading = false }: StatsSummaryProps) {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 animate-pulse">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className="phoenix-card p-4 sm:p-5 flex flex-col justify-between h-24"
+          >
+            <div className="h-4 bg-[#eff2f6] dark:bg-[#1f232e] w-1/2 rounded" />
+            <div className="h-7 bg-[#eff2f6] dark:bg-[#1f232e] w-1/3 rounded mt-2" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  const syncRate =
+    stats.total > 0 ? Math.round((stats.translated / stats.total) * 100) : 0;
+
   const items = [
     {
-      label: 'Tổng số câu',
+      title: 'Tổng số câu',
       value: stats.total,
+      badge: 'Bộ nhớ từ',
+      badgeClass: 'badge-phoenix-primary',
       icon: BookOpen,
-      color: 'text-slate-700 dark:text-slate-200',
-      bgColor: 'bg-slate-100 dark:bg-slate-800',
+      iconColor: 'text-[#ea580c]',
     },
     {
-      label: 'Đã dịch AI',
+      title: 'Đã dịch nghĩa',
       value: stats.translated,
-      icon: Sparkles,
-      color: 'text-emerald-700 dark:text-emerald-300',
-      bgColor: 'bg-emerald-50 dark:bg-emerald-950/40',
+      badge: `${syncRate}% hoàn thành`,
+      badgeClass: 'badge-phoenix-success',
+      icon: CheckCircle,
+      iconColor: 'text-[#25b003]',
     },
     {
-      label: 'Chưa dịch',
-      value: stats.pending,
-      icon: Clock,
-      color: 'text-amber-700 dark:text-amber-300',
-      bgColor: 'bg-amber-50 dark:bg-amber-950/40',
-    },
-    {
-      label: 'Yêu thích',
+      title: 'Đã đánh dấu sao',
       value: stats.favorites,
+      badge: 'Yêu thích',
+      badgeClass: 'badge-phoenix-warning',
       icon: Star,
-      color: 'text-yellow-600 dark:text-yellow-400',
-      bgColor: 'bg-yellow-50 dark:bg-yellow-950/40',
+      iconColor: 'text-amber-500',
     },
     {
-      label: 'Video nguồn',
+      title: 'Video YouTube',
       value: stats.totalVideos,
+      badge: 'Nguồn học',
+      badgeClass: 'badge-phoenix-secondary',
       icon: Video,
-      color: 'text-red-600 dark:text-red-400',
-      bgColor: 'bg-red-50 dark:bg-red-950/40',
+      iconColor: 'text-[#525b75] dark:text-[#9fa6bc]',
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3.5 mb-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
       {items.map((item, idx) => {
         const Icon = item.icon;
         return (
           <div
             key={idx}
-            className="flex items-center gap-3 p-3 sm:p-3.5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl transition-all hover:border-slate-300 dark:hover:border-slate-700 shadow-2xs"
+            className="phoenix-card p-4 sm:p-5 flex flex-col justify-between"
           >
-            <div className={`p-2 rounded-lg shrink-0 ${item.bgColor}`}>
-              <Icon className={`w-4 h-4 ${item.color}`} />
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold text-[#6e7891] dark:text-[#8a94ad] truncate">
+                {item.title}
+              </span>
+              <Icon className={`w-4 h-4 ${item.iconColor} shrink-0`} />
             </div>
-            <div className="min-w-0">
-              <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate">
-                {item.label}
-              </p>
-              {isLoading ? (
-                <div className="h-5 w-10 bg-slate-200 dark:bg-slate-800 rounded animate-pulse mt-0.5" />
-              ) : (
-                <p className="text-base font-semibold text-slate-900 dark:text-slate-100 tracking-tight">
-                  {item.value}
-                </p>
-              )}
+
+            <div className="mt-3 flex items-baseline justify-between gap-2">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#141824] dark:text-[#eff2f6] tabular-nums tracking-tight">
+                {item.value}
+              </span>
+              <span className={`badge-phoenix ${item.badgeClass} text-[10px]`}>
+                {item.badge}
+              </span>
             </div>
           </div>
         );

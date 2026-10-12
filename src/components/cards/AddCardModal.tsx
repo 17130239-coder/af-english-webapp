@@ -41,7 +41,7 @@ export function AddCardModal({ isOpen, onClose, onSubmit }: AddCardModalProps) {
     try {
       setIsSubmitting(true);
       await onSubmit(formData);
-      showToast('Đã thêm thẻ mới thành công', 'success');
+      showToast('Đã thêm từ vựng mới thành công', 'success');
       setFormData({
         text: '',
         keyPhrase: '',
@@ -54,7 +54,7 @@ export function AddCardModal({ isOpen, onClose, onSubmit }: AddCardModalProps) {
       });
       onClose();
     } catch (err) {
-      showToast(err instanceof Error ? err.message : 'Lỗi khi thêm thẻ', 'error');
+      showToast(err instanceof Error ? err.message : 'Lỗi khi lưu câu mới', 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -64,87 +64,92 @@ export function AddCardModal({ isOpen, onClose, onSubmit }: AddCardModalProps) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Thêm thẻ từ vựng mới"
-      description="Nhập từ hoặc câu tiếng Anh bạn muốn học vào hệ thống"
+      title="Thêm từ vựng mới"
+      description="Lưu câu tiếng Anh kèm từ khoá, bản dịch và video tham khảo"
       maxWidth="lg"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 font-sans select-none">
         <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Câu hoặc từ tiếng Anh <span className="text-red-500">*</span>
+          <label className="block text-xs font-semibold text-[#525b75] dark:text-[#9fa6bc] mb-1.5">
+            Câu tiếng Anh (English Sentence) <span className="text-rose-500">*</span>
           </label>
           <textarea
             value={formData.text}
             onChange={(e) => handleChange('text', e.target.value)}
             rows={3}
-            placeholder="Ví dụ: Let's go get some coffee..."
-            className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400/40"
+            placeholder="Ví dụ: It is essential to get the hang of active recall early on..."
+            className="w-full px-3 py-2 text-sm bg-white dark:bg-[#141824] border border-[#cbd0dd] dark:border-[#373e53] rounded-lg text-[#141824] dark:text-[#eff2f6] placeholder-[#9fa6bc] focus:outline-none focus:border-[#ea580c] focus:ring-2 focus:ring-[#ea580c]/20 transition-colors"
             required
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <Input
-            label="Cụm từ trọng tâm (Key phrase)"
+            label="Từ khoá / Cụm từ trọng tâm"
             value={formData.keyPhrase || ''}
             onChange={(e) => handleChange('keyPhrase', e.target.value)}
-            placeholder="Ví dụ: go get something"
+            placeholder="Ví dụ: get the hang of"
           />
           <Input
             label="Nghĩa của cụm từ"
             value={formData.phraseTranslation || ''}
             onChange={(e) => handleChange('phraseTranslation', e.target.value)}
-            placeholder="Ví dụ: đi mua hoặc lấy cái gì"
+            placeholder="Ví dụ: nắm bắt được cách làm"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Bản dịch tiếng Việt
+          <label className="block text-xs font-semibold text-[#525b75] dark:text-[#9fa6bc] mb-1.5">
+            Bản dịch cả câu (Vietnamese Translation)
           </label>
           <textarea
             value={formData.translation || ''}
             onChange={(e) => handleChange('translation', e.target.value)}
             rows={2}
-            placeholder="Bản dịch của toàn bộ câu..."
-            className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400/40"
+            placeholder="Ví dụ: Điều cốt yếu là phải nắm bắt được phương pháp gợi nhớ chủ động ngay từ sớm..."
+            className="w-full px-3 py-2 text-sm bg-white dark:bg-[#141824] border border-[#cbd0dd] dark:border-[#373e53] rounded-lg text-[#141824] dark:text-[#eff2f6] placeholder-[#9fa6bc] focus:outline-none focus:border-[#ea580c] focus:ring-2 focus:ring-[#ea580c]/20 transition-colors"
           />
         </div>
 
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-            Ghi chú / Giải thích ngữ pháp
-          </label>
-          <textarea
-            value={formData.explanation || ''}
-            onChange={(e) => handleChange('explanation', e.target.value)}
-            rows={2}
-            placeholder="Giải thích ngữ cảnh dùng hoặc cấu trúc ngữ pháp..."
-            className="w-full px-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400/40"
-          />
-        </div>
+        <Input
+          label="Ghi chú ngữ pháp & ngữ cảnh"
+          value={formData.explanation || ''}
+          onChange={(e) => handleChange('explanation', e.target.value)}
+          placeholder="Ví dụ: Cụm từ thường dùng trong ngữ cảnh học tập kỹ năng mới"
+        />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <Input
-            label="Nguồn video / Tiêu đề"
+            label="Tiêu đề video YouTube"
             value={formData.videoTitle || ''}
             onChange={(e) => handleChange('videoTitle', e.target.value)}
-            placeholder="YouTube Video"
+            placeholder="Ví dụ: TED Talk: How to learn faster"
           />
           <Input
-            label="Đường link URL (nếu có)"
+            label="Link video YouTube (kèm timestamp)"
             value={formData.url || ''}
             onChange={(e) => handleChange('url', e.target.value)}
-            placeholder="https://youtube.com/..."
+            placeholder="https://youtu.be/...&t=84"
           />
         </div>
 
-        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-          <Button type="button" variant="ghost" size="sm" onClick={onClose} disabled={isSubmitting}>
-            Hủy bỏ
+        {/* Action Buttons */}
+        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#e3e6ed] dark:border-[#272f3d]">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={onClose}
+          >
+            Huỷ bỏ
           </Button>
-          <Button type="submit" variant="primary" size="sm" isLoading={isSubmitting}>
-            Thêm thẻ
+          <Button
+            type="submit"
+            variant="primary"
+            size="sm"
+            isLoading={isSubmitting}
+          >
+            Lưu từ vựng
           </Button>
         </div>
       </form>
