@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SubtitleCard } from '@/types/card';
-import { LayoutMode } from '@/types/filter';
+import { SubtitleCard } from '@/core/entities/card.entity';
+import { LayoutMode } from '@/core/entities/filter.entity';
 import {
   Volume2,
   Copy,
@@ -22,7 +22,7 @@ import {
   cleanTitle,
 } from '@/presentation/utils/formatters';
 import { SpeechSynthesisService } from '@/infrastructure/services/speech-synthesis.service';
-import { useToast } from '@/components/ui/Toast';
+import { useToast } from '@/presentation/components/ui/Toast';
 
 interface CardItemProps {
   card: SubtitleCard;

@@ -6,15 +6,15 @@ import { CreateCardDTO, UpdateCardDTO } from '@/core/dtos/card.dto';
 import { useCards } from '@/presentation/hooks/useCards';
 import { useCardFilters } from '@/presentation/hooks/useCardFilters';
 import { useTheme } from '@/presentation/hooks/useTheme';
-import { ToastProvider, useToast } from '@/components/ui/Toast';
-import { Header } from '@/components/layout/Header';
-import { StatsSummary } from '@/components/stats/StatsSummary';
-import { FilterBar } from '@/components/filters/FilterBar';
-import { CardGrid } from '@/components/cards/CardGrid';
-import { CardGridSkeleton } from '@/components/cards/CardSkeleton';
-import { AddCardModal } from '@/components/cards/AddCardModal';
-import { CardDetailModal } from '@/components/cards/CardDetailModal';
-import { FlashcardModal } from '@/components/study/FlashcardModal';
+import { ToastProvider, useToast } from '@/presentation/components/ui/Toast';
+import { Header } from '@/presentation/components/layout/Header';
+import { StatsSummary } from '@/presentation/components/stats/StatsSummary';
+import { FilterBar } from '@/presentation/components/filters/FilterBar';
+import { CardGrid } from '@/presentation/components/cards/CardGrid';
+import { CardGridSkeleton } from '@/presentation/components/cards/CardSkeleton';
+import { AddCardModal } from '@/presentation/components/cards/AddCardModal';
+import { CardDetailModal } from '@/presentation/components/cards/CardDetailModal';
+import { FlashcardModal } from '@/presentation/components/study/FlashcardModal';
 
 function MainApp() {
   const { showToast } = useToast();

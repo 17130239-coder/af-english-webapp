@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardStats } from '@/types/card';
+import { CardStats } from '@/core/entities/card.entity';
 import { BookMarked, Check, Star, Film } from 'lucide-react';
 
 interface StatsSummaryProps {

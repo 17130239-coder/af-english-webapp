@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Modal } from '@/components/ui/Modal';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { SubtitleCard, UpdateCardDTO } from '@/types/card';
-import { useToast } from '@/components/ui/Toast';
+import { Modal } from '@/presentation/components/ui/Modal';
+import { Input } from '@/presentation/components/ui/Input';
+import { Button } from '@/presentation/components/ui/Button';
+import { SubtitleCard } from '@/core/entities/card.entity';
+import { UpdateCardDTO } from '@/core/dtos/card.dto';
+import { useToast } from '@/presentation/components/ui/Toast';
 
 interface CardDetailModalProps {
   isOpen: boolean;

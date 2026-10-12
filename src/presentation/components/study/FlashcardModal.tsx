@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { SubtitleCard } from '@/types/card';
-import { Modal } from '@/components/ui/Modal';
+import { SubtitleCard } from '@/core/entities/card.entity';
+import { Modal } from '@/presentation/components/ui/Modal';
 import {
   Volume2,
   ChevronLeft,

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Search, X, LayoutGrid, List, AlignJustify, ChevronDown, Film, ArrowUpDown } from 'lucide-react';
-import { CardFilterState, FilterStatus, SortOrder, LayoutMode } from '@/types/filter';
-import { CardStats } from '@/types/card';
+import { CardFilterState, FilterStatus, SortOrder, LayoutMode } from '@/core/entities/filter.entity';
+import { CardStats } from '@/core/entities/card.entity';
 import { cleanTitle } from '@/presentation/utils/formatters';
 
 interface FilterBarProps {

@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { SubtitleCard } from '@/types/card';
-import { LayoutMode } from '@/types/filter';
+import { SubtitleCard } from '@/core/entities/card.entity';
+import { LayoutMode } from '@/core/entities/filter.entity';
 import { CardItem } from './CardItem';
 import { SearchX, RotateCcw, ArrowDown } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/presentation/components/ui/Button';
 
 interface CardGridProps {
   cards: SubtitleCard[];

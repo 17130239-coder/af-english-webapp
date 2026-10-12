@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Plus, GraduationCap, Download, Sun, Moon } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/presentation/components/ui/Button';
 
 interface HeaderProps {
   onOpenAddModal: () => void;
