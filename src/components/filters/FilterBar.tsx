@@ -4,6 +4,7 @@ import React from 'react';
 import { Search, X, LayoutGrid, List, AlignJustify, ChevronDown, Film, ArrowUpDown } from 'lucide-react';
 import { CardFilterState, FilterStatus, SortOrder, LayoutMode } from '@/types/filter';
 import { CardStats } from '@/types/card';
+import { cleanTitle } from '@/presentation/utils/formatters';
 
 interface FilterBarProps {
   filters: CardFilterState;
@@ -74,7 +75,7 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
                 <option value="all">Tất cả video ({videos.length})</option>
                 {videos.map((vid) => (
                   <option key={vid} value={vid}>
-                    {vid}
+                    {cleanTitle(vid)}
                   </option>
                 ))}
               </select>

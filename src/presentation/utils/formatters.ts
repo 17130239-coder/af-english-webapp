@@ -90,3 +90,13 @@ export function splitByPhrase(text: string, phrase?: string): Array<{ text: stri
     match: part.toLowerCase() === cleanPhrase.toLowerCase(),
   }));
 }
+
+/**
+ * Strips decorative emoji icons from titles (e.g. 📍, 🔴, 🎬)
+ */
+export function cleanTitle(title?: string): string {
+  if (!title) return '';
+  return title
+    .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1FA70}-\u{1FAFF}]/gu, '')
+    .trim();
+}

@@ -19,6 +19,7 @@ import {
   parseYouTubeTimestamp,
   formatVideoTime,
   splitByPhrase,
+  cleanTitle,
 } from '@/presentation/utils/formatters';
 import { speakEnglish } from '@/lib/utils/speech';
 import { useToast } from '@/components/ui/Toast';
@@ -105,7 +106,7 @@ export function CardItem({
 
             {card.videoTitle && (
               <span className="text-[11px] text-[var(--text-faint)] truncate max-w-xs">
-                · {card.videoTitle}
+                · {cleanTitle(card.videoTitle)}
               </span>
             )}
           </div>
@@ -213,14 +214,14 @@ export function CardItem({
                 href={card.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                title={`Mở YouTube: ${card.videoTitle}`}
+                title={`Mở YouTube: ${cleanTitle(card.videoTitle)}`}
                 className="hover:text-[var(--text-main)] truncate transition-colors max-w-[200px] sm:max-w-[260px]"
               >
-                {card.videoTitle || 'YouTube'}
+                {cleanTitle(card.videoTitle) || 'YouTube'}
               </a>
             ) : (
               <span className="truncate max-w-[200px] sm:max-w-[260px]">
-                {card.videoTitle || 'Thủ công'}
+                {cleanTitle(card.videoTitle) || 'Thủ công'}
               </span>
             )}
 
