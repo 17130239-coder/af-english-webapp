@@ -21,7 +21,7 @@ import {
   splitByPhrase,
   cleanTitle,
 } from '@/presentation/utils/formatters';
-import { speakEnglish } from '@/lib/utils/speech';
+import { SpeechSynthesisService } from '@/infrastructure/services/speech-synthesis.service';
 import { useToast } from '@/components/ui/Toast';
 
 interface CardItemProps {
@@ -70,7 +70,7 @@ export function CardItem({
   const handleSpeak = (e: React.MouseEvent, text: string, rate: number = 1.0) => {
     e.stopPropagation();
     setIsPlayingAudio(true);
-    speakEnglish(text, () => setIsPlayingAudio(false), rate);
+    SpeechSynthesisService.speak(text, () => setIsPlayingAudio(false), rate);
   };
 
   /* -------------------------------------------------------------

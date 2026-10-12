@@ -5,7 +5,7 @@ import { SubtitleCard } from '@/core/entities/card.entity';
 import { CreateCardDTO, UpdateCardDTO } from '@/core/dtos/card.dto';
 import { useCards } from '@/presentation/hooks/useCards';
 import { useCardFilters } from '@/presentation/hooks/useCardFilters';
-import { useTheme } from '@/lib/hooks/useTheme';
+import { useTheme } from '@/presentation/hooks/useTheme';
 import { ToastProvider, useToast } from '@/components/ui/Toast';
 import { Header } from '@/components/layout/Header';
 import { StatsSummary } from '@/components/stats/StatsSummary';

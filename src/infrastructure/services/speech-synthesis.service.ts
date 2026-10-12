@@ -12,7 +12,7 @@ export class SpeechSynthesisService {
     }
   }
 
-  static speak(text: string, onEnd?: () => void): void {
+  static speak(text: string, onEnd?: () => void, rate: number = 0.95): void {
     if (!this.isSupported()) {
       console.warn('Text-to-speech is not supported in this browser.');
       onEnd?.();
@@ -23,7 +23,7 @@ export class SpeechSynthesisService {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
-    utterance.rate = 0.95;
+    utterance.rate = rate;
 
     const voices = window.speechSynthesis.getVoices();
     const voice =

@@ -7,14 +7,18 @@ export function useSpeech() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playingText, setPlayingText] = useState<string | null>(null);
 
-  const speak = useCallback((text: string) => {
+  const speak = useCallback((text: string, rate: number = 0.95) => {
     setIsPlaying(true);
     setPlayingText(text);
 
-    SpeechSynthesisService.speak(text, () => {
-      setIsPlaying(false);
-      setPlayingText(null);
-    });
+    SpeechSynthesisService.speak(
+      text,
+      () => {
+        setIsPlaying(false);
+        setPlayingText(null);
+      },
+      rate
+    );
   }, []);
 
   const stop = useCallback(() => {

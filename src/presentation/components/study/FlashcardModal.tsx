@@ -12,7 +12,7 @@ import {
   Play,
   RotateCw,
 } from 'lucide-react';
-import { speakEnglish } from '@/lib/utils/speech';
+import { SpeechSynthesisService } from '@/infrastructure/services/speech-synthesis.service';
 import { splitByPhrase, parseYouTubeTimestamp, formatVideoTime } from '@/presentation/utils/formatters';
 
 interface FlashcardModalProps {
@@ -51,7 +51,7 @@ export function FlashcardModal({
 
   const handleSpeak = (text: string, rate: number = 1.0) => {
     setIsPlayingAudio(true);
-    speakEnglish(text, () => setIsPlayingAudio(false), rate);
+    SpeechSynthesisService.speak(text, () => setIsPlayingAudio(false), rate);
   };
 
   // Keyboard navigation
@@ -131,17 +131,17 @@ export function FlashcardModal({
           />
         </div>
 
-        {/* Flashcard Surface */}
+        {/* Flashcard Surface - Fixed Height to prevent any modal shifting */}
         <div
           onClick={() => setIsFlipped(!isFlipped)}
-          className={`p-6 sm:p-8 rounded-xl border transition-all cursor-pointer min-h-[260px] flex flex-col justify-between ${
+          className={`p-6 sm:p-7 rounded-xl border transition-colors duration-150 cursor-pointer h-[330px] sm:h-[350px] flex flex-col justify-between ${
             isFlipped
               ? 'bg-[var(--bg-muted)] border-[var(--border-hover)]'
               : 'bg-[var(--bg-card)] border-[var(--border-default)] hover:border-[var(--border-hover)] shadow-xs'
           }`}
         >
           {/* Top Label */}
-          <div className="flex items-center justify-between text-xs text-[var(--text-muted)] pb-2 border-b border-[var(--border-subtle)]">
+          <div className="flex items-center justify-between text-xs text-[var(--text-muted)] pb-2 border-b border-[var(--border-subtle)] shrink-0">
             <span className="font-semibold text-[11px] uppercase tracking-wider">
               {isFlipped ? 'Mặt sau · Nghĩa & Ngữ cảnh' : 'Mặt trước · Tiếng Anh'}
             </span>
@@ -155,9 +155,9 @@ export function FlashcardModal({
           </div>
 
           {/* Central Body */}
-          <div className="my-auto py-4 text-center space-y-3">
+          <div className="flex-1 my-auto py-2 flex flex-col justify-center overflow-y-auto">
             {!isFlipped ? (
-              <div className="space-y-3">
+              <div className="space-y-3 text-center my-auto">
                 {currentCard.keyPhrase && (
                   <div className="inline-block bg-[var(--highlight-bg)] text-[var(--highlight-text)] font-semibold text-xs px-2.5 py-1 rounded-md">
                     {currentCard.keyPhrase}
@@ -184,7 +184,7 @@ export function FlashcardModal({
                 </p>
               </div>
             ) : (
-              <div className="space-y-3 text-left">
+              <div className="space-y-3 text-left my-auto">
                 {currentCard.keyPhrase && currentCard.phraseTranslation && (
                   <div className="p-2.5 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)] text-xs">
                     <span className="font-semibold text-[var(--accent)] mr-1.5">
@@ -218,7 +218,7 @@ export function FlashcardModal({
           </div>
 
           {/* Bottom Card Controls */}
-          <div className="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)] text-xs">
+          <div className="flex items-center justify-between pt-2 border-t border-[var(--border-subtle)] text-xs shrink-0">
             <button
               type="button"
               onClick={(e) => {
