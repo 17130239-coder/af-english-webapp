@@ -43,7 +43,33 @@ function MainApp() {
   // Modals state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isStudyModalOpen, setIsStudyModalOpen] = useState(false);
+  const [isStudyMounted, setIsStudyMounted] = useState(false);
   const [editingCard, setEditingCard] = useState<SubtitleCard | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const handleOpenStudy = () => {
+    setIsStudyMounted(true);
+    setIsStudyModalOpen(true);
+  };
+
+  const handleCloseStudy = () => {
+    setIsStudyModalOpen(false);
+    setTimeout(() => {
+      setIsStudyMounted(false);
+    }, 200);
+  };
+
+  const handleOpenEdit = (card: SubtitleCard) => {
+    setEditingCard(card);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEdit = () => {
+    setIsEditModalOpen(false);
+    setTimeout(() => {
+      setEditingCard(null);
+    }, 200);
+  };
 
   // Global search shortcut (⌘K or Ctrl+K)
   useEffect(() => {
@@ -109,7 +135,7 @@ function MainApp() {
     <div className="min-h-screen flex flex-col bg-[var(--bg-page)] text-[var(--text-body)] antialiased font-sans">
       <Header
         onOpenAddModal={() => setIsAddModalOpen(true)}
-        onOpenStudyModal={() => setIsStudyModalOpen(true)}
+        onOpenStudyModal={handleOpenStudy}
         onExport={handleExport}
         totalCards={cards.length}
         theme={theme}
@@ -135,7 +161,7 @@ function MainApp() {
           <CardGrid
             cards={filteredCards}
             onToggleFavorite={handleToggleFavorite}
-            onEdit={(card) => setEditingCard(card)}
+            onEdit={handleOpenEdit}
             onDelete={handleDeleteCard}
             onResetFilters={resetFilters}
             isFiltered={isFiltered}
@@ -154,18 +180,17 @@ function MainApp() {
       {editingCard && (
         <CardDetailModal
           key={editingCard.id}
-          isOpen={true}
-          onClose={() => setEditingCard(null)}
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEdit}
           card={editingCard}
           onUpdate={handleUpdateCard}
         />
       )}
 
-      {isStudyModalOpen && (
+      {isStudyMounted && (
         <FlashcardModal
-          key="study-modal"
-          isOpen={true}
-          onClose={() => setIsStudyModalOpen(false)}
+          isOpen={isStudyModalOpen}
+          onClose={handleCloseStudy}
           cards={filteredCards.length > 0 ? filteredCards : cards}
           onToggleFavorite={handleToggleFavorite}
         />

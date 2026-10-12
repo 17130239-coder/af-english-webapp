@@ -75,7 +75,7 @@ export function FlashcardModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, handleNext, handlePrev]);
 
-  if (!isOpen || deck.length === 0) return null;
+  if (deck.length === 0) return null;
 
   const currentCard = deck[currentIndex] || deck[0];
   const progressPercent = Math.round(((currentIndex + 1) / deck.length) * 100);

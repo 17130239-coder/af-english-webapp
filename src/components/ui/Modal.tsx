@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 
 interface ModalProps {
@@ -20,21 +20,72 @@ export function Modal({
   children,
   maxWidth = 'lg',
 }: ModalProps) {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Synchronize state during render when isOpen prop changes
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
+      setShouldRender(true);
+    } else {
+      setIsVisible(false);
     }
+  }
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let animFrameId: number;
+
+    if (isOpen) {
+      // Compensate scrollbar width to guarantee zero layout shift
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      if (scrollBarWidth > 0) {
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
+      }
+
+      // Next frame trigger transition for silky 60fps entry
+      animFrameId = requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    } else {
+      timeoutId = setTimeout(() => {
+        setShouldRender(false);
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      }, 150);
+    }
+
     return () => {
-      document.body.style.overflow = 'unset';
-      window.removeEventListener('keydown', handleKeyDown);
+      clearTimeout(timeoutId);
+      cancelAnimationFrame(animFrameId);
     };
+  }, [isOpen]);
+
+  // Cleanup on complete unmount
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, []);
+
+  // Escape key handler
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!shouldRender) return null;
 
   const maxWidthStyles = {
     sm: 'max-w-sm',
@@ -46,14 +97,25 @@ export function Modal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/40 backdrop-blur-xs select-none">
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 select-none transition-opacity duration-150 ease-out ${
+        isVisible ? 'opacity-100 bg-black/55' : 'opacity-0 bg-black/0 pointer-events-none'
+      }`}
+    >
+      {/* Backdrop */}
       <div
         className="fixed inset-0"
         onClick={onClose}
         aria-hidden="true"
       />
+
+      {/* Modal Dialog Card */}
       <div
-        className={`relative w-full ${maxWidthStyles[maxWidth]} bg-[var(--bg-card)] border border-[var(--border-default)] rounded-2xl text-[var(--text-main)] shadow-xl overflow-hidden z-10 font-sans transition-all duration-150`}
+        className={`relative w-full ${maxWidthStyles[maxWidth]} bg-[var(--bg-card)] border border-[var(--border-default)] rounded-2xl text-[var(--text-main)] shadow-2xl overflow-hidden z-10 font-sans transform-gpu transition-all duration-150 ease-out ${
+          isVisible
+            ? 'opacity-100 scale-100 translate-y-0'
+            : 'opacity-0 scale-95 translate-y-1.5 pointer-events-none'
+        }`}
         role="dialog"
         aria-modal="true"
       >
