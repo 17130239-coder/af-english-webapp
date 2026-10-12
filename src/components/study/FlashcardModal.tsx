@@ -109,9 +109,9 @@ export function FlashcardModal({
       <div className="space-y-5 font-sans select-none">
         {/* Progress Bar & Quick Controls */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-[#6e7891] dark:text-[#8a94ad]">
+          <div className="flex items-center justify-between text-xs text-[#6b7280] dark:text-[#9ca3af]">
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-[#141824] dark:text-[#eff2f6]">
+              <span className="font-semibold text-[#1b1e28] dark:text-[#f4f5f8]">
                 Tiến độ: {currentIndex + 1}/{deck.length}
               </span>
               <span>({progressPercent}%)</span>
@@ -121,7 +121,7 @@ export function FlashcardModal({
               <button
                 type="button"
                 onClick={handleShuffle}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded text-[#525b75] hover:text-[#141824] dark:text-[#9fa6bc] dark:hover:text-[#eff2f6] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] cursor-pointer transition-colors"
+                className="inline-flex items-center gap-1 px-2 py-1 rounded text-[#6b7280] hover:text-[#1b1e28] dark:text-[#9ca3af] dark:hover:text-[#f4f5f8] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] cursor-pointer transition-colors"
                 title="Xáo trộn thứ tự các thẻ"
               >
                 <Shuffle className="w-3.5 h-3.5" />
@@ -134,7 +134,7 @@ export function FlashcardModal({
                 className={`p-1 rounded cursor-pointer transition-colors ${
                   currentCard.isFavorite
                     ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40'
-                    : 'text-[#6e7891] hover:text-amber-500 hover:bg-[#eff2f6] dark:hover:bg-[#1f232e]'
+                    : 'text-[#6b7280] hover:text-amber-500 hover:bg-[#f1f3f7] dark:hover:bg-[#252730]'
                 }`}
                 title={currentCard.isFavorite ? 'Bỏ yêu thích' : 'Đánh dấu yêu thích'}
               >
@@ -143,9 +143,9 @@ export function FlashcardModal({
             </div>
           </div>
 
-          <div className="w-full bg-[#eff2f6] dark:bg-[#1f232e] h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-[#f1f3f7] dark:bg-[#252730] h-1.5 rounded-full overflow-hidden">
             <div
-              className="bg-[#ea580c] h-full transition-all duration-300 rounded-full"
+              className="bg-[#f97316] h-full transition-all duration-300 rounded-full"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -156,12 +156,12 @@ export function FlashcardModal({
           onClick={() => setIsFlipped(!isFlipped)}
           className={`p-6 sm:p-8 rounded-xl border transition-all duration-200 cursor-pointer min-h-[280px] flex flex-col justify-between ${
             isFlipped
-              ? 'bg-[#f8f9fc] dark:bg-[#10131d] border-[#ea580c]/30 shadow-xs'
-              : 'bg-white dark:bg-[#141824] hover:border-[#cbd0dd] dark:hover:border-[#3e465b] border-[#e3e6ed] dark:border-[#272f3d] shadow-sm'
+              ? 'bg-[#f8f9fb] dark:bg-[#181921] border-[#f97316]/30 shadow-xs'
+              : 'bg-white dark:bg-[#1c1d23] hover:border-[#cbd2df] dark:hover:border-[#3b3e4c] border-[#e5e7ee] dark:border-[#2a2c35] shadow-sm'
           }`}
         >
           {/* Card Top Label */}
-          <div className="flex items-center justify-between pb-3 border-b border-[#e3e6ed] dark:border-[#272f3d]">
+          <div className="flex items-center justify-between pb-3 border-b border-[#e5e7ee] dark:border-[#2a2c35]">
             <span className="badge-phoenix badge-phoenix-primary">
               {isFlipped ? 'Mặt sau: Nghĩa & Ngữ cảnh' : 'Mặt trước: Câu tiếng Anh'}
             </span>
@@ -174,17 +174,17 @@ export function FlashcardModal({
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   title={`Mở video YouTube: ${currentCard.videoTitle} (tại ${timeFormatted})`}
-                  className="inline-flex items-center gap-1 text-xs text-[#6e7891] dark:text-[#8a94ad] hover:text-[#ea580c] transition-colors"
+                  className="inline-flex items-center gap-1 text-xs text-[#6b7285] dark:text-[#7d8498] hover:text-[#f97316] transition-colors"
                 >
-                  <Play className="w-3 h-3 text-[#ea580c] fill-current" />
+                  <Play className="w-3 h-3 text-[#f97316] fill-current" />
                   <span>{timeFormatted}</span>
                 </a>
               ) : (
                 <span
                   title={currentCard.videoTitle}
-                  className="inline-flex items-center gap-1 text-xs text-[#6e7891] dark:text-[#8a94ad]"
+                  className="inline-flex items-center gap-1 text-xs text-[#6b7285] dark:text-[#7d8498]"
                 >
-                  <Play className="w-3 h-3 text-[#ea580c] fill-current" />
+                  <Play className="w-3 h-3 text-[#f97316] fill-current" />
                   <span>{timeFormatted}</span>
                 </span>
               )
@@ -197,17 +197,17 @@ export function FlashcardModal({
               /* FRONT: English text + Target phrase */
               <div className="space-y-4">
                 {currentCard.keyPhrase && (
-                  <div className="inline-block bg-[#fff1eb] dark:bg-[#2b170e] text-[#9a3412] dark:text-[#fb923c] font-bold text-sm px-3 py-1 rounded-md">
+                  <div className="inline-block bg-orange-50 dark:bg-orange-950/40 text-orange-700 dark:text-orange-300 font-bold text-sm px-3 py-1 rounded-md border border-orange-200/60 dark:border-orange-800/40">
                     {currentCard.keyPhrase}
                   </div>
                 )}
 
-                <p className="text-xl sm:text-2xl font-bold text-[#141824] dark:text-[#eff2f6] leading-relaxed max-w-xl mx-auto">
+                <p className="text-xl sm:text-2xl font-bold text-[#1b1e28] dark:text-[#f4f5f8] leading-relaxed max-w-xl mx-auto">
                   {segments.map((seg, idx) =>
                     seg.match ? (
                       <mark
                         key={idx}
-                        className="bg-[#fff1eb] text-[#9a3412] dark:bg-[#2b170e] dark:text-[#fb923c] font-extrabold px-1.5 py-0.5 rounded mx-1"
+                        className="bg-orange-50 text-orange-700 dark:bg-orange-950/40 dark:text-orange-300 font-extrabold px-1.5 py-0.5 rounded mx-1"
                       >
                         {seg.text}
                       </mark>
@@ -217,7 +217,7 @@ export function FlashcardModal({
                   )}
                 </p>
 
-                <p className="text-xs text-[#6e7891] dark:text-[#8a94ad] italic">
+                <p className="text-xs text-[#6b7285] dark:text-[#7d8498] italic">
                   (Bấm vào thẻ hoặc nhấn Phím cách để xem nghĩa)
                 </p>
               </div>
@@ -225,28 +225,28 @@ export function FlashcardModal({
               /* BACK: Vietnamese translation + notes */
               <div className="space-y-4 text-left max-w-xl mx-auto">
                 <div>
-                  <span className="text-xs font-bold text-[#6e7891] dark:text-[#8a94ad] uppercase tracking-wider block mb-1">
+                  <span className="text-xs font-bold text-[#6b7285] dark:text-[#7d8498] uppercase tracking-wider block mb-1">
                     Bản dịch tiếng Việt
                   </span>
-                  <p className="text-lg sm:text-xl font-bold text-[#141824] dark:text-[#eff2f6] leading-relaxed">
+                  <p className="text-lg sm:text-xl font-bold text-[#1b1e28] dark:text-[#f4f5f8] leading-relaxed">
                     &quot;{currentCard.translation || 'Chưa có bản dịch'}&quot;
                   </p>
                 </div>
 
                 {currentCard.phraseTranslation && (
-                  <div className="p-3 bg-[#fff1eb]/60 dark:bg-[#2b170e]/60 rounded-lg border border-[#fed7aa]/30">
-                    <span className="text-xs font-semibold text-[#9a3412] dark:text-[#fb923c]">
+                  <div className="p-3 bg-orange-50/60 dark:bg-orange-950/30 rounded-lg border border-orange-200/40 dark:border-orange-900/40">
+                    <span className="text-xs font-semibold text-orange-700 dark:text-orange-300">
                       Nghĩa từ khoá:
                     </span>
-                    <p className="text-sm font-bold text-[#141824] dark:text-[#eff2f6] mt-0.5">
+                    <p className="text-sm font-bold text-[#1b1e28] dark:text-[#f4f5f8] mt-0.5">
                       {currentCard.keyPhrase} — {currentCard.phraseTranslation}
                     </p>
                   </div>
                 )}
 
                 {currentCard.explanation && (
-                  <div className="p-3 bg-white dark:bg-[#141824] rounded-lg border border-[#e3e6ed] dark:border-[#272f3d] text-xs text-[#525b75] dark:text-[#9fa6bc]">
-                    <span className="font-bold text-[#141824] dark:text-[#eff2f6] mr-1">
+                  <div className="p-3 bg-white dark:bg-[#1c1d23] rounded-lg border border-[#e5e7ee] dark:border-[#2a2c35] text-xs text-[#4b5266] dark:text-[#9da3b4]">
+                    <span className="font-bold text-[#1b1e28] dark:text-[#f4f5f8] mr-1">
                       Ghi chú ngữ pháp:
                     </span>
                     <span>{currentCard.explanation}</span>
@@ -259,13 +259,13 @@ export function FlashcardModal({
           {/* Audio Pronunciation Pill Bar */}
           <div
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center justify-between pt-3 border-t border-[#e3e6ed] dark:border-[#272f3d]"
+            className="flex items-center justify-between pt-3 border-t border-[#e5e7ee] dark:border-[#2a2c35]"
           >
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => handleSpeak(currentCard.text, 1.0)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#ea580c] hover:bg-[#c2410c] text-white shadow-2xs cursor-pointer transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#f97316] hover:bg-[#ea580c] text-white shadow-2xs cursor-pointer transition-colors"
                 title="Nghe phát âm chuẩn"
               >
                 <Volume2 className={`w-3.5 h-3.5 ${isPlayingAudio ? 'animate-bounce' : ''}`} />
@@ -275,7 +275,7 @@ export function FlashcardModal({
               <button
                 type="button"
                 onClick={() => handleSpeak(currentCard.text, 0.75)}
-                className="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-[#141824] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] text-[#525b75] dark:text-[#9fa6bc] border border-[#cbd0dd] dark:border-[#272f3d] cursor-pointer transition-colors"
+                className="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-white dark:bg-[#1c1d23] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] text-[#4b5266] dark:text-[#9da3b4] border border-[#e2e5ec] dark:border-[#2f313c] cursor-pointer transition-colors"
                 title="Nghe phát âm chậm"
               >
                 <span>0.75x</span>
@@ -285,7 +285,7 @@ export function FlashcardModal({
             <button
               type="button"
               onClick={() => setIsFlipped(!isFlipped)}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-[#ea580c] hover:underline cursor-pointer"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-[#f97316] hover:underline cursor-pointer"
             >
               <RotateCw className="w-3.5 h-3.5" />
               <span>{isFlipped ? 'Xem lại mặt trước' : 'Lật thẻ [Space]'}</span>
@@ -296,7 +296,7 @@ export function FlashcardModal({
         {/* Spaced Repetition Grading (Shown when flipped) */}
         {isFlipped && (
           <div className="space-y-2 animate-in fade-in duration-200">
-            <span className="block text-xs font-semibold text-center text-[#6e7891] dark:text-[#8a94ad]">
+            <span className="block text-xs font-semibold text-center text-[#6b7285] dark:text-[#7d8498]">
               Đánh giá mức độ ghi nhớ (Phím số 1 - 4):
             </span>
             <div className="grid grid-cols-4 gap-2">
@@ -345,7 +345,7 @@ export function FlashcardModal({
             type="button"
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="inline-flex items-center gap-1 px-3.5 py-2 text-xs font-semibold rounded-lg bg-white dark:bg-[#141824] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] text-[#31374a] dark:text-[#eff2f6] border border-[#cbd0dd] dark:border-[#272f3d] disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors"
+            className="inline-flex items-center gap-1 px-3.5 py-2 text-xs font-semibold rounded-lg bg-white dark:bg-[#1c1d23] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] text-[#3a4052] dark:text-[#f4f5f8] border border-[#e2e5ec] dark:border-[#2f313c] disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Câu trước [←]</span>
@@ -355,7 +355,7 @@ export function FlashcardModal({
             type="button"
             onClick={handleNext}
             disabled={currentIndex === deck.length - 1}
-            className="inline-flex items-center gap-1 px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#ea580c] hover:bg-[#c2410c] text-white disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1 px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#f97316] hover:bg-[#ea580c] text-white disabled:opacity-40 disabled:pointer-events-none cursor-pointer transition-colors shadow-2xs"
           >
             <span>Câu tiếp theo [→]</span>
             <ChevronRight className="w-4 h-4" />

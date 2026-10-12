@@ -40,19 +40,19 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
             value={filters.searchQuery}
             onChange={(e) => onChange({ searchQuery: e.target.value })}
             aria-label="Tìm kiếm"
-            className="w-full pl-10 pr-20 py-2.5 text-xs sm:text-sm bg-white dark:bg-[#141824] border border-[#cbd0dd] dark:border-[#272f3d] rounded-full text-[#141824] dark:text-[#eff2f6] focus:outline-none focus:border-[#ea580c] focus:ring-2 focus:ring-[#ea580c]/20 transition-all shadow-2xs"
+            className="w-full pl-10 pr-20 py-2.5 text-xs sm:text-sm bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-full text-[#1b1e28] dark:text-[#f4f5f8] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 transition-all shadow-2xs"
           />
           {filters.searchQuery ? (
             <button
               type="button"
               onClick={() => onChange({ searchQuery: '' })}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#6e7891] hover:text-[#141824] dark:hover:text-white rounded-full cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#6b7285] hover:text-[#1b1e28] dark:hover:text-white rounded-full cursor-pointer"
               title="Xoá tìm kiếm"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           ) : (
-            <kbd className="hidden sm:inline-block absolute right-3.5 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[10px] font-mono text-[#6e7891] dark:text-[#8a94ad] bg-[#eff2f6] dark:bg-[#1f232e] border border-[#cbd0dd] dark:border-[#272f3d] rounded">
+            <kbd className="hidden sm:inline-block absolute right-3.5 top-1/2 -translate-y-1/2 px-2 py-0.5 text-[10px] font-mono text-[#6b7285] dark:text-[#7d8498] bg-[#f1f3f7] dark:bg-[#252730] border border-[#e2e5ec] dark:border-[#2f313c] rounded">
               ⌘K
             </kbd>
           )}
@@ -65,7 +65,7 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
               <select
                 value={filters.selectedVideo}
                 onChange={(e) => onChange({ selectedVideo: e.target.value })}
-                className="w-full appearance-none pl-3 pr-8 py-2.5 text-xs bg-white dark:bg-[#141824] border border-[#cbd0dd] dark:border-[#272f3d] rounded-lg text-[#31374a] dark:text-[#eff2f6] focus:outline-none focus:border-[#ea580c] focus:ring-2 focus:ring-[#ea580c]/20 cursor-pointer truncate shadow-2xs font-medium"
+                className="w-full appearance-none pl-3 pr-8 py-2.5 text-xs bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-lg text-[#3a4052] dark:text-[#f4f5f8] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 cursor-pointer truncate shadow-2xs font-medium"
               >
                 <option value="all">Tất cả video ({videos.length})</option>
                 {videos.map((vid) => (
@@ -74,7 +74,7 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
                   </option>
                 ))}
               </select>
-              <ChevronDown className="w-4 h-4 text-[#6e7891] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+              <ChevronDown className="w-4 h-4 text-[#6b7285] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
             </div>
           )}
 
@@ -82,13 +82,13 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
             <select
               value={filters.sortBy}
               onChange={(e) => onChange({ sortBy: e.target.value as SortOrder })}
-              className="w-full appearance-none pl-3 pr-8 py-2.5 text-xs bg-white dark:bg-[#141824] border border-[#cbd0dd] dark:border-[#272f3d] rounded-lg text-[#31374a] dark:text-[#eff2f6] focus:outline-none focus:border-[#ea580c] focus:ring-2 focus:ring-[#ea580c]/20 cursor-pointer shadow-2xs font-medium"
+              className="w-full appearance-none pl-3 pr-8 py-2.5 text-xs bg-white dark:bg-[#1c1d23] border border-[#e2e5ec] dark:border-[#2f313c] rounded-lg text-[#3a4052] dark:text-[#f4f5f8] focus:outline-none focus:border-[#f97316] focus:ring-2 focus:ring-[#f97316]/20 cursor-pointer shadow-2xs font-medium"
             >
               <option value="newest">Mới nhất trước</option>
               <option value="oldest">Cũ nhất trước</option>
               <option value="alphabetical">Bảng chữ cái (A-Z)</option>
             </select>
-            <ChevronDown className="w-4 h-4 text-[#6e7891] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+            <ChevronDown className="w-4 h-4 text-[#6b7285] pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
           </div>
         </div>
       </div>
@@ -105,8 +105,8 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
                 onClick={() => onChange({ status: tab.id })}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer shrink-0 flex items-center gap-2 ${
                   isActive
-                    ? 'bg-[#ea580c] text-white shadow-xs'
-                    : 'bg-white dark:bg-[#141824] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] text-[#525b75] dark:text-[#9fa6bc] border border-[#e3e6ed] dark:border-[#272f3d]'
+                    ? 'bg-[#f97316] hover:bg-[#ea580c] text-white shadow-xs'
+                    : 'bg-white dark:bg-[#1c1d23] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] text-[#4b5266] dark:text-[#9da3b4] border border-[#e5e7ee] dark:border-[#2a2c35]'
                 }`}
               >
                 <span>{tab.label}</span>
@@ -114,7 +114,7 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
                   className={`text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-bold ${
                     isActive
                       ? 'bg-white/25 text-white'
-                      : 'bg-[#eff2f6] dark:bg-[#1f232e] text-[#6e7891] dark:text-[#8a94ad]'
+                      : 'bg-[#f1f3f7] dark:bg-[#252730] text-[#6b7285] dark:text-[#7d8498]'
                   }`}
                 >
                   {tab.count}
@@ -125,7 +125,7 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
         </div>
 
         {/* Layout Mode Segmented Control */}
-        <div className="flex items-center p-1 bg-white dark:bg-[#141824] border border-[#e3e6ed] dark:border-[#272f3d] rounded-lg self-end sm:self-auto shrink-0 shadow-2xs">
+        <div className="flex items-center p-1 bg-white dark:bg-[#1c1d23] border border-[#e5e7ee] dark:border-[#2a2c35] rounded-lg self-end sm:self-auto shrink-0 shadow-2xs">
           {layoutOptions.map((opt) => {
             const Icon = opt.icon;
             const isSelected = filters.layoutMode === opt.id;
@@ -136,8 +136,8 @@ export function FilterBar({ filters, onChange, stats, videos }: FilterBarProps) 
                 onClick={() => onChange({ layoutMode: opt.id })}
                 className={`px-2.5 py-1 text-xs font-medium rounded-md flex items-center gap-1.5 transition-colors cursor-pointer ${
                   isSelected
-                    ? 'bg-[#eff2f6] dark:bg-[#1f232e] text-[#141824] dark:text-[#eff2f6] font-semibold shadow-2xs'
-                    : 'text-[#6e7891] dark:text-[#8a94ad] hover:text-[#141824] dark:hover:text-white'
+                    ? 'bg-[#f1f3f7] dark:bg-[#252730] text-[#1b1e28] dark:text-[#f4f5f8] font-semibold shadow-2xs'
+                    : 'text-[#6b7285] dark:text-[#7d8498] hover:text-[#1b1e28] dark:hover:text-white'
                 }`}
                 title={`Hiển thị dạng ${opt.label}`}
               >

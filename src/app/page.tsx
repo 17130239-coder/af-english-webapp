@@ -109,7 +109,7 @@ function MainApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f5f7fa] dark:bg-[#0f111a] text-[#141824] dark:text-[#eff2f6] transition-colors duration-150 antialiased font-sans">
+    <div className="min-h-screen flex flex-col bg-[#f8f9fb] dark:bg-[#141519] text-[#1b1e28] dark:text-[#f4f5f8] transition-colors duration-150 antialiased font-sans">
       <Header
         onOpenAddModal={() => setIsAddModalOpen(true)}
         onOpenStudyModal={() => setIsStudyModalOpen(true)}
@@ -121,12 +121,12 @@ function MainApp() {
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
         {/* Title & Overview Ribbon */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-[#e3e6ed] dark:border-[#272f3d]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-[#e5e7ee] dark:border-[#2a2c35]">
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#141824] dark:text-[#eff2f6] tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#1b1e28] dark:text-[#f4f5f8] tracking-tight">
               Kho từ vựng & Câu hội thoại
             </h2>
-            <p className="text-xs sm:text-sm text-[#6e7891] dark:text-[#8a94ad] mt-0.5">
+            <p className="text-xs sm:text-sm text-[#6b7285] dark:text-[#7d8498] mt-0.5">
               Tra cứu, nghe phát âm ngữ cảnh và luyện tập ghi nhớ qua flashcard
             </p>
           </div>

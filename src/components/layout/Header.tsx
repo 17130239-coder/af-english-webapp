@@ -22,16 +22,16 @@ export function Header({
   onToggleTheme,
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#141824]/95 backdrop-blur-md border-b border-[#e3e6ed] dark:border-[#272f3d] font-sans transition-colors duration-150">
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#1c1d23]/95 backdrop-blur-md border-b border-[#e5e7ee] dark:border-[#2a2c35] font-sans transition-colors duration-150">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         {/* Brand & Identity */}
         <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-          <div className="w-9 h-9 rounded-lg bg-[#ea580c] text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
+          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#fb923c] to-[#f97316] text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
             <BookOpen className="w-5 h-5 stroke-[2.2]" />
           </div>
 
           <div className="flex items-center gap-2 min-w-0">
-            <h1 className="text-base sm:text-lg font-bold text-[#141824] dark:text-[#eff2f6] leading-tight truncate">
+            <h1 className="text-base sm:text-lg font-bold text-[#1b1e28] dark:text-[#f4f5f8] leading-tight truncate">
               AF English
             </h1>
             <span
@@ -49,13 +49,13 @@ export function Header({
             <button
               type="button"
               onClick={onToggleTheme}
-              className="p-2 rounded-lg text-[#525b75] hover:text-[#141824] dark:text-[#9fa6bc] dark:hover:text-[#eff2f6] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] border border-[#e3e6ed] dark:border-[#272f3d] transition-colors cursor-pointer"
+              className="p-2 rounded-lg text-[#4b5266] hover:text-[#1b1e28] dark:text-[#9da3b4] dark:hover:text-[#f4f5f8] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] border border-[#e5e7ee] dark:border-[#2a2c35] transition-colors cursor-pointer"
               title={theme === 'dark' ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'}
             >
               {theme === 'dark' ? (
                 <Sun className="w-4 h-4 text-amber-400" />
               ) : (
-                <Moon className="w-4 h-4 text-[#ea580c]" />
+                <Moon className="w-4 h-4 text-[#f97316]" />
               )}
             </button>
           )}
@@ -78,7 +78,7 @@ export function Header({
               onClick={onOpenStudyModal}
               title="Luyện tập Flashcard"
             >
-              <BookOpen className="w-3.5 h-3.5 text-[#ea580c]" />
+              <BookOpen className="w-3.5 h-3.5 text-[#f97316]" />
               <span>Học Flashcard</span>
             </Button>
           )}

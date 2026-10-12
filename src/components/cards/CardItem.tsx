@@ -91,7 +91,7 @@ export function CardItem({
                 title={`Mở video YouTube: ${card.videoTitle}${timeFormatted ? ` (tại ${timeFormatted})` : ''}`}
                 className="badge-phoenix badge-phoenix-primary gap-1 shrink-0 hover:underline"
               >
-                <Video className="w-3 h-3 text-[#ea580c]" />
+                <Video className="w-3 h-3 text-[#f97316]" />
                 <span>{timeFormatted || 'YouTube'}</span>
               </a>
             ) : (
@@ -104,7 +104,7 @@ export function CardItem({
             )}
 
             {card.keyPhrase && (
-              <span className="font-bold text-[#ea580c] dark:text-[#fb923c] truncate">
+              <span className="font-bold text-[#f97316] dark:text-[#fb923c] truncate">
                 {card.keyPhrase}
               </span>
             )}
@@ -113,14 +113,14 @@ export function CardItem({
             {card.translation ? (
               <span
                 title="Đã có bản dịch tiếng Việt"
-                className="text-[#25b003] inline-flex items-center cursor-help shrink-0"
+                className="text-[#10b981] inline-flex items-center cursor-help shrink-0"
               >
                 <CheckCircle2 className="w-3.5 h-3.5 stroke-[2.2]" />
               </span>
             ) : (
               <span
                 title="Chờ bản dịch tiếng Việt"
-                className="text-[#6e7891] dark:text-[#8a94ad] inline-flex items-center cursor-help shrink-0"
+                className="text-[#6b7285] dark:text-[#7d8498] inline-flex items-center cursor-help shrink-0"
               >
                 <Clock className="w-3.5 h-3.5 stroke-[2]" />
               </span>
@@ -128,12 +128,12 @@ export function CardItem({
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-            <p className="text-sm font-medium text-[#141824] dark:text-[#eff2f6] truncate">
+            <p className="text-sm font-medium text-[#1b1e28] dark:text-[#f4f5f8] truncate">
               {textSegments.map((seg, idx) =>
                 seg.match ? (
                   <mark
                     key={idx}
-                    className="bg-[#fff1eb] text-[#9a3412] dark:bg-[#2b170e] dark:text-[#fb923c] font-semibold px-1 py-0.5 rounded mx-0.5"
+                    className="bg-orange-50 text-orange-700 dark:bg-orange-950/40 dark:text-orange-300 font-semibold px-1 py-0.5 rounded mx-0.5"
                   >
                     {seg.text}
                   </mark>
@@ -144,7 +144,7 @@ export function CardItem({
             </p>
 
             {card.translation && (
-              <span className="text-xs text-[#6e7891] dark:text-[#8a94ad] italic truncate shrink-0 max-w-sm">
+              <span className="text-xs text-[#6b7285] dark:text-[#7d8498] italic truncate shrink-0 max-w-sm">
                 &quot;{card.translation}&quot;
               </span>
             )}
@@ -158,8 +158,8 @@ export function CardItem({
             onClick={(e) => handleSpeak(e, card.text, 1.0)}
             className={`p-1.5 rounded-lg cursor-pointer transition-colors ${
               isPlayingAudio
-                ? 'bg-[#ea580c] text-white'
-                : 'text-[#ea580c] hover:bg-[#fff1eb] dark:hover:bg-[#2b170e]'
+                ? 'bg-[#f97316] text-white'
+                : 'text-[#f97316] hover:bg-orange-50 dark:hover:bg-orange-950/40'
             }`}
             title="Phát âm"
           >
@@ -169,11 +169,11 @@ export function CardItem({
           <button
             type="button"
             onClick={handleCopyText}
-            className="p-1.5 rounded-lg text-[#6e7891] hover:text-[#141824] dark:hover:text-white hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] cursor-pointer transition-colors"
+            className="p-1.5 rounded-lg text-[#6b7285] hover:text-[#1b1e28] dark:hover:text-white hover:bg-[#f1f3f7] dark:hover:bg-[#252730] cursor-pointer transition-colors"
             title="Sao chép"
           >
             {copiedText ? (
-              <Check className="w-4 h-4 text-[#25b003]" />
+              <Check className="w-4 h-4 text-[#10b981]" />
             ) : (
               <Copy className="w-4 h-4" />
             )}
@@ -185,7 +185,7 @@ export function CardItem({
             className={`p-1.5 rounded-lg cursor-pointer transition-colors ${
               card.isFavorite
                 ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40'
-                : 'text-[#6e7891] hover:text-amber-500 hover:bg-[#eff2f6] dark:hover:bg-[#1f232e]'
+                : 'text-[#6b7285] hover:text-amber-500 hover:bg-[#f1f3f7] dark:hover:bg-[#252730]'
             }`}
             title={card.isFavorite ? 'Bỏ yêu thích' : 'Yêu thích'}
           >
@@ -195,7 +195,7 @@ export function CardItem({
           <button
             type="button"
             onClick={() => onEdit(card)}
-            className="p-1.5 rounded-lg text-[#6e7891] hover:text-[#141824] dark:hover:text-white hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] cursor-pointer transition-colors"
+            className="p-1.5 rounded-lg text-[#6b7285] hover:text-[#1b1e28] dark:hover:text-white hover:bg-[#f1f3f7] dark:hover:bg-[#252730] cursor-pointer transition-colors"
             title="Chỉnh sửa"
           >
             <Edit2 className="w-3.5 h-3.5" />
@@ -227,7 +227,7 @@ export function CardItem({
     >
       <div className="space-y-3.5">
         {/* Card Header Strip: Video Link (Icon + Tooltip) & Status + Star */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#e3e6ed] dark:border-[#272f3d] gap-2">
+        <div className="flex items-center justify-between pb-3 border-b border-[#e5e7ee] dark:border-[#2a2c35] gap-2">
           <div className="flex items-center gap-2 min-w-0">
             {card.url ? (
               <a
@@ -237,7 +237,7 @@ export function CardItem({
                 title={`Mở video YouTube: ${card.videoTitle}${timeFormatted ? ` (tại ${timeFormatted})` : ''}`}
                 className="badge-phoenix badge-phoenix-primary gap-1.5 shrink-0 hover:underline"
               >
-                <Video className="w-3.5 h-3.5 text-[#ea580c]" />
+                <Video className="w-3.5 h-3.5 text-[#f97316]" />
                 {timeFormatted ? <span>{timeFormatted}</span> : <span>YouTube</span>}
                 <ExternalLink className="w-2.5 h-2.5 opacity-60" />
               </a>
@@ -256,14 +256,14 @@ export function CardItem({
             {card.translation ? (
               <span
                 title="Đã có bản dịch tiếng Việt"
-                className="p-1 rounded-md text-[#25b003] hover:bg-[#d9fbd0]/50 dark:hover:bg-[#1d2527] transition-colors cursor-help inline-flex items-center"
+                className="p-1 rounded-md text-[#10b981] hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors cursor-help inline-flex items-center"
               >
                 <CheckCircle2 className="w-4 h-4 stroke-[2.2]" />
               </span>
             ) : (
               <span
                 title="Chờ bản dịch tiếng Việt"
-                className="p-1 rounded-md text-[#6e7891] dark:text-[#8a94ad] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] transition-colors cursor-help inline-flex items-center"
+                className="p-1 rounded-md text-[#6b7285] dark:text-[#7d8498] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] transition-colors cursor-help inline-flex items-center"
               >
                 <Clock className="w-4 h-4 stroke-[2]" />
               </span>
@@ -275,7 +275,7 @@ export function CardItem({
               className={`p-1.5 rounded-lg cursor-pointer transition-colors ${
                 card.isFavorite
                   ? 'text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40'
-                  : 'text-[#6e7891] hover:text-amber-500 hover:bg-[#eff2f6] dark:hover:bg-[#1f232e]'
+                  : 'text-[#6b7285] hover:text-amber-500 hover:bg-[#f1f3f7] dark:hover:bg-[#252730]'
               }`}
               title={card.isFavorite ? 'Bỏ yêu thích' : 'Đánh dấu yêu thích'}
             >
@@ -287,11 +287,11 @@ export function CardItem({
         {/* Target Key Phrase Prompt Block */}
         {card.keyPhrase && (
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-bold text-[#ea580c] dark:text-[#fb923c] bg-[#fff1eb] dark:bg-[#2b170e] px-2 py-0.5 rounded">
+            <span className="text-xs font-bold text-orange-700 dark:text-orange-300 bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded border border-orange-200/60 dark:border-orange-800/40">
               {card.keyPhrase}
             </span>
             {card.phraseTranslation && (
-              <span className="text-xs text-[#525b75] dark:text-[#9fa6bc] font-medium">
+              <span className="text-xs text-[#4b5266] dark:text-[#9da3b4] font-medium">
                 — {card.phraseTranslation}
               </span>
             )}
@@ -300,12 +300,12 @@ export function CardItem({
 
         {/* English Subtitle Sentence */}
         <div className="py-0.5">
-          <p className="text-base sm:text-lg font-semibold text-[#141824] dark:text-[#eff2f6] leading-relaxed">
+          <p className="text-base sm:text-lg font-semibold text-[#1b1e28] dark:text-[#f4f5f8] leading-relaxed">
             {textSegments.map((seg, idx) =>
               seg.match ? (
                 <mark
                   key={idx}
-                  className="bg-[#fff1eb] text-[#9a3412] dark:bg-[#2b170e] dark:text-[#fb923c] font-bold px-1.5 py-0.5 rounded mx-0.5 inline-block"
+                  className="bg-orange-50 text-orange-700 dark:bg-orange-950/40 dark:text-orange-300 font-bold px-1.5 py-0.5 rounded mx-0.5 inline-block"
                 >
                   {seg.text}
                 </mark>
@@ -317,12 +317,12 @@ export function CardItem({
         </div>
 
         {/* Audio Action Row */}
-        <div className="flex items-center justify-between bg-[#f5f7fa] dark:bg-[#10131d] px-3 py-2 rounded-lg border border-[#e3e6ed] dark:border-[#272f3d]">
+        <div className="flex items-center justify-between bg-[#f8f9fb] dark:bg-[#17181f] px-3 py-2 rounded-lg border border-[#e5e7ee] dark:border-[#2a2c35]">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={(e) => handleSpeak(e, card.text, 1.0)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-[#ea580c] hover:bg-[#c2410c] text-white shadow-2xs cursor-pointer transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md bg-[#f97316] hover:bg-[#ea580c] text-white shadow-2xs cursor-pointer transition-colors"
               title="Phát âm tốc độ chuẩn"
             >
               <Volume2 className={`w-3.5 h-3.5 ${isPlayingAudio ? 'animate-bounce' : ''}`} />
@@ -332,7 +332,7 @@ export function CardItem({
             <button
               type="button"
               onClick={(e) => handleSpeak(e, card.text, 0.75)}
-              className="inline-flex items-center px-2 py-1.5 text-xs font-medium rounded-md bg-white dark:bg-[#141824] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] text-[#525b75] dark:text-[#9fa6bc] border border-[#cbd0dd] dark:border-[#272f3d] cursor-pointer transition-colors"
+              className="inline-flex items-center px-2 py-1.5 text-xs font-medium rounded-md bg-white dark:bg-[#1c1d23] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] text-[#4b5266] dark:text-[#9da3b4] border border-[#e2e5ec] dark:border-[#2f313c] cursor-pointer transition-colors"
               title="Phát âm tốc độ chậm"
             >
               <span>0.75x</span>
@@ -342,11 +342,11 @@ export function CardItem({
           <button
             type="button"
             onClick={handleCopyText}
-            className="p-1.5 rounded-md text-[#6e7891] hover:text-[#141824] dark:hover:text-white hover:bg-white dark:hover:bg-[#141824] border border-transparent hover:border-[#cbd0dd] dark:border-[#272f3d] cursor-pointer transition-colors"
+            className="p-1.5 rounded-md text-[#6b7285] hover:text-[#1b1e28] dark:hover:text-white hover:bg-white dark:hover:bg-[#1c1d23] border border-transparent hover:border-[#e2e5ec] dark:border-[#2f313c] cursor-pointer transition-colors"
             title="Sao chép câu"
           >
             {copiedText ? (
-              <Check className="w-4 h-4 text-[#25b003]" />
+              <Check className="w-4 h-4 text-[#10b981]" />
             ) : (
               <Copy className="w-4 h-4" />
             )}
@@ -355,11 +355,11 @@ export function CardItem({
 
         {/* Vietnamese Translation Callout */}
         {card.translation && (
-          <div className="p-3 rounded-lg bg-[#f5f7fa] dark:bg-[#10131d] border-l-3 border-[#ea580c]">
-            <span className="block text-[11px] font-bold text-[#6e7891] dark:text-[#8a94ad] uppercase tracking-wider mb-1">
+          <div className="p-3 rounded-lg bg-orange-50/50 dark:bg-orange-950/20 border-l-3 border-[#f97316]">
+            <span className="block text-[11px] font-bold text-[#6b7285] dark:text-[#7d8498] uppercase tracking-wider mb-1">
               Bản dịch tiếng Việt
             </span>
-            <p className="text-sm font-medium text-[#31374a] dark:text-[#d1d5e0] leading-relaxed">
+            <p className="text-sm font-medium text-[#3a4052] dark:text-[#d1d5e0] leading-relaxed">
               &quot;{card.translation}&quot;
             </p>
           </div>
@@ -367,8 +367,8 @@ export function CardItem({
 
         {/* Grammar / Context Explanation */}
         {card.explanation && (
-          <div className="p-3 rounded-lg bg-[#f8f9fc] dark:bg-[#121622] border border-[#e3e6ed] dark:border-[#272f3d] text-xs text-[#525b75] dark:text-[#9fa6bc] leading-relaxed">
-            <span className="font-bold text-[#141824] dark:text-[#eff2f6] mr-1">
+          <div className="p-3 rounded-lg bg-[#f8f9fb] dark:bg-[#17181f] border border-[#e5e7ee] dark:border-[#2a2c35] text-xs text-[#4b5266] dark:text-[#9da3b4] leading-relaxed">
+            <span className="font-bold text-[#1b1e28] dark:text-[#f4f5f8] mr-1">
               Ghi chú:
             </span>
             <span>{card.explanation}</span>
@@ -377,14 +377,14 @@ export function CardItem({
 
         {/* Synonyms Chips */}
         {card.synonyms && card.synonyms.length > 0 && (
-          <div className="flex items-center gap-1.5 flex-wrap text-xs text-[#6e7891] dark:text-[#8a94ad]">
+          <div className="flex items-center gap-1.5 flex-wrap text-xs text-[#6b7285] dark:text-[#7d8498]">
             <span className="font-semibold">Từ đồng nghĩa:</span>
             {card.synonyms.map((syn, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={(e) => handleSpeak(e, syn, 1.0)}
-                className="badge-phoenix badge-phoenix-secondary hover:border-[#ea580c] hover:text-[#ea580c] cursor-pointer transition-colors"
+                className="badge-phoenix badge-phoenix-secondary hover:border-[#f97316] hover:text-[#f97316] cursor-pointer transition-colors"
                 title={`Bấm để nghe từ: ${syn}`}
               >
                 {syn}
@@ -399,7 +399,7 @@ export function CardItem({
             <button
               type="button"
               onClick={() => setShowExamples(!showExamples)}
-              className="text-xs font-semibold text-[#ea580c] dark:text-[#fb923c] hover:underline inline-flex items-center gap-1 cursor-pointer"
+              className="text-xs font-semibold text-[#f97316] dark:text-[#fb923c] hover:underline inline-flex items-center gap-1 cursor-pointer"
             >
               <span>{showExamples ? 'Ẩn ví dụ thực tế' : 'Xem thêm ví dụ thực tế'}</span>
               {showExamples ? (
@@ -410,14 +410,14 @@ export function CardItem({
             </button>
 
             {showExamples && (
-              <div className="mt-2 space-y-2 pl-3 border-l-2 border-[#cbd0dd] dark:border-[#272f3d]">
+              <div className="mt-2 space-y-2 pl-3 border-l-2 border-[#e2e5ec] dark:border-[#2a2c35]">
                 {card.exampleSentence && (
                   <div>
-                    <p className="text-xs font-medium text-[#141824] dark:text-[#eff2f6] leading-relaxed">
+                    <p className="text-xs font-medium text-[#1b1e28] dark:text-[#f4f5f8] leading-relaxed">
                       • {card.exampleSentence}
                     </p>
                     {card.exampleTranslation && (
-                      <p className="text-xs text-[#6e7891] dark:text-[#8a94ad] italic pl-2">
+                      <p className="text-xs text-[#6b7285] dark:text-[#7d8498] italic pl-2">
                         &quot;{card.exampleTranslation}&quot;
                       </p>
                     )}
@@ -425,11 +425,11 @@ export function CardItem({
                 )}
                 {card.examples && card.examples.map((ex, idx) => (
                   <div key={idx}>
-                    <p className="text-xs font-medium text-[#141824] dark:text-[#eff2f6] leading-relaxed">
+                    <p className="text-xs font-medium text-[#1b1e28] dark:text-[#f4f5f8] leading-relaxed">
                       • {ex.sentence}
                     </p>
                     {ex.translation && (
-                      <p className="text-xs text-[#6e7891] dark:text-[#8a94ad] italic pl-2">
+                      <p className="text-xs text-[#6b7285] dark:text-[#7d8498] italic pl-2">
                         &quot;{ex.translation}&quot;
                       </p>
                     )}
@@ -442,10 +442,10 @@ export function CardItem({
       </div>
 
       {/* Card Footer: Metadata and Edit / Delete actions */}
-      <div className="flex items-center justify-between pt-3.5 mt-4 border-t border-[#e3e6ed] dark:border-[#272f3d]">
+      <div className="flex items-center justify-between pt-3.5 mt-4 border-t border-[#e5e7ee] dark:border-[#2a2c35]">
         <span
           title={`Mã thẻ: ${card.id}`}
-          className="text-[11px] text-[#6e7891] dark:text-[#8a94ad] inline-flex items-center gap-1 cursor-help"
+          className="text-[11px] text-[#6b7285] dark:text-[#7d8498] inline-flex items-center gap-1 cursor-help"
         >
           <Hash className="w-3 h-3 opacity-60" />
           <span>{card.id.slice(0, 8)}</span>
@@ -455,7 +455,7 @@ export function CardItem({
           <button
             type="button"
             onClick={() => onEdit(card)}
-            className="p-1.5 rounded-lg text-[#6e7891] hover:text-[#141824] dark:hover:text-white hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] cursor-pointer transition-colors"
+            className="p-1.5 rounded-lg text-[#6b7285] hover:text-[#1b1e28] dark:hover:text-white hover:bg-[#f1f3f7] dark:hover:bg-[#252730] cursor-pointer transition-colors"
             title="Chỉnh sửa câu"
           >
             <Edit2 className="w-3.5 h-3.5" />

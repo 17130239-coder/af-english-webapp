@@ -15,19 +15,19 @@ export function Badge({
 }: BadgeProps) {
   const variantStyles = {
     default:
-      'bg-[#fff1eb] text-[#9a3412] border-[#fed7aa] dark:bg-[#2b170e] dark:text-[#fb923c] dark:border-[#6c3216]',
+      'bg-orange-50 text-orange-700 border-orange-200/80 dark:bg-orange-950/40 dark:text-orange-300 dark:border-orange-800/50',
     success:
-      'bg-[#d9fbd0] text-[#1c6c09] border-[#90d67f] dark:bg-[#1d2527] dark:text-[#90d67f] dark:border-[#354739]',
+      'bg-emerald-50 text-emerald-700 border-emerald-200/80 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50',
     warning:
-      'bg-[#ffefca] text-[#bc3803] border-[#ffcc85] dark:bg-[#262527] dark:text-[#ffcc85] dark:border-[#51453a]',
+      'bg-amber-50 text-amber-700 border-amber-200/80 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/50',
     danger:
-      'bg-[#ffe0db] text-[#b81800] border-[#f48270] dark:bg-[#241f25] dark:text-[#f48270] dark:border-[#4c3233]',
+      'bg-rose-50 text-rose-700 border-rose-200/80 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800/50',
     info:
-      'bg-[#c7ebff] text-[#005585] border-[#60c6ff] dark:bg-[#1a2431] dark:text-[#60c6ff] dark:border-[#29435a]',
+      'bg-sky-50 text-sky-700 border-sky-200/80 dark:bg-sky-950/40 dark:text-sky-300 dark:border-sky-800/50',
     purple:
-      'bg-[#f2e7fe] text-[#581c87] border-[#d8b4fe] dark:bg-[#271d3b] dark:text-[#c084fc] dark:border-[#4c1d95]',
+      'bg-purple-50 text-purple-700 border-purple-200/80 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800/50',
     neutral:
-      'bg-[#eff2f6] text-[#525b75] border-[#cbd0dd] dark:bg-[#222834] dark:text-[#cbd0dd] dark:border-[#3d414c]',
+      'bg-[#f1f3f7] text-[#4b5266] border-[#e2e5ec] dark:bg-[#22242c] dark:text-[#9da3b4] dark:border-[#2f313c]',
   };
 
   const sizeStyles = {

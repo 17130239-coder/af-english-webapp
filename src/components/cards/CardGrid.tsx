@@ -68,11 +68,11 @@ export function CardGrid({
   if (cards.length === 0) {
     return (
       <div className="phoenix-card p-10 sm:p-14 text-center my-6 select-none border-dashed">
-        <div className="w-12 h-12 mx-auto bg-[#eff2f6] dark:bg-[#1f232e] text-[#ea580c] rounded-full flex items-center justify-center mb-3">
+        <div className="w-12 h-12 mx-auto bg-orange-50 dark:bg-orange-950/40 text-[#f97316] rounded-full flex items-center justify-center mb-3">
           <SearchX className="w-6 h-6 stroke-[2]" />
         </div>
 
-        <h3 className="text-base font-bold text-[#141824] dark:text-[#eff2f6] mb-1">
+        <h3 className="text-base font-bold text-[#1b1e28] dark:text-[#f4f5f8] mb-1">
           {isFiltered
             ? 'Không tìm thấy câu phù hợp'
             : 'Chưa có dữ liệu từ vựng'}
@@ -133,16 +133,16 @@ export function CardGrid({
       {cards.length > PAGE_CHUNK && (
         <div className="phoenix-card px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-sans select-none">
           <div className="flex items-center gap-3">
-            <span className="text-[#6e7891] dark:text-[#8a94ad]">
-              Đang hiển thị <strong className="text-[#141824] dark:text-[#eff2f6] tabular-nums">{visibleCards.length}</strong> / <strong className="text-[#141824] dark:text-[#eff2f6] tabular-nums">{cards.length}</strong> câu
+            <span className="text-[#6b7280] dark:text-[#9ca3af]">
+              Đang hiển thị <strong className="text-[#1b1e28] dark:text-[#f4f5f8] tabular-nums">{visibleCards.length}</strong> / <strong className="text-[#1b1e28] dark:text-[#f4f5f8] tabular-nums">{cards.length}</strong> câu
             </span>
-            <div className="w-24 h-1.5 bg-[#eff2f6] dark:bg-[#1f232e] rounded-full overflow-hidden hidden xs:block">
+            <div className="w-24 h-1.5 bg-[#f1f3f7] dark:bg-[#252730] rounded-full overflow-hidden hidden xs:block">
               <div
-                className="h-full bg-[#ea580c] transition-all duration-200 rounded-full"
+                className="h-full bg-[#f97316] transition-all duration-200 rounded-full"
                 style={{ width: `${streamPercent}%` }}
               />
             </div>
-            <span className="text-[#ea580c] font-bold tabular-nums">
+            <span className="text-[#f97316] dark:text-[#fb923c] font-bold tabular-nums">
               ({streamPercent}%)
             </span>
           </div>
@@ -153,22 +153,22 @@ export function CardGrid({
                 <button
                   type="button"
                   onClick={loadMore}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-[#141824] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] text-[#31374a] dark:text-[#eff2f6] border border-[#cbd0dd] dark:border-[#272f3d] flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
+                  className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-[#1c1d23] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] text-[#1b1e28] dark:text-[#f4f5f8] border border-[#e5e7ee] dark:border-[#2a2c35] flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
                 >
-                  <ArrowDown className="w-3.5 h-3.5 text-[#ea580c]" />
+                  <ArrowDown className="w-3.5 h-3.5 text-[#f97316]" />
                   <span>Tải thêm (+{Math.min(PAGE_CHUNK, cards.length - visibleCards.length)})</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={loadAll}
-                  className="px-3 py-1.5 text-xs font-medium rounded-lg text-[#6e7891] hover:text-[#141824] dark:text-[#8a94ad] dark:hover:text-[#eff2f6] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] cursor-pointer transition-colors"
+                  className="px-3 py-1.5 text-xs font-medium rounded-lg text-[#6b7280] hover:text-[#1b1e28] dark:text-[#9ca3af] dark:hover:text-[#f4f5f8] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] cursor-pointer transition-colors"
                 >
                   <span>Xem tất cả</span>
                 </button>
               </>
             ) : (
-              <span className="text-[#25b003] font-semibold flex items-center gap-1 text-xs">
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1 text-xs">
                 <CheckCheck className="w-4 h-4" />
                 <span>Đã hiển thị toàn bộ {cards.length} câu</span>
               </span>

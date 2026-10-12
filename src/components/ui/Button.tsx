@@ -16,23 +16,23 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    'inline-flex items-center justify-center font-sans font-semibold rounded-lg transition-colors duration-150 cursor-pointer select-none disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ea580c]/40';
+    'inline-flex items-center justify-center font-sans font-semibold rounded-lg transition-colors duration-150 cursor-pointer select-none disabled:opacity-40 disabled:pointer-events-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f97316]/40';
 
   const variantStyles = {
     primary:
-      'bg-[#ea580c] hover:bg-[#c2410c] text-white shadow-xs border border-[#ea580c]',
+      'bg-[#f97316] hover:bg-[#ea580c] text-white shadow-xs border border-[#f97316]',
     lime:
-      'bg-[#25b003] hover:bg-[#1fa002] text-white shadow-xs border border-[#25b003]',
+      'bg-[#10b981] hover:bg-[#059669] text-white shadow-xs border border-[#10b981]',
     secondary:
-      'bg-[#eff2f6] hover:bg-[#e3e6ed] text-[#31374a] dark:bg-[#1f232e] dark:hover:bg-[#272f3d] dark:text-[#eff2f6] border border-[#e3e6ed] dark:border-[#31374a]',
+      'bg-[#f1f3f7] hover:bg-[#e5e7ee] text-[#3a4052] dark:bg-[#22242c] dark:hover:bg-[#2b2d37] dark:text-[#f4f5f8] border border-[#e5e7ee] dark:border-[#2f313c]',
     outline:
-      'bg-transparent hover:bg-[#eff2f6] text-[#31374a] dark:hover:bg-[#1f232e] dark:text-[#cbd0dd] border border-[#cbd0dd] dark:border-[#31374a]',
+      'bg-transparent hover:bg-[#f1f3f7] text-[#3a4052] dark:hover:bg-[#22242c] dark:text-[#d3d7e2] border border-[#e2e5ec] dark:border-[#2f313c]',
     ghost:
-      'bg-transparent hover:bg-[#eff2f6] text-[#525b75] hover:text-[#141824] dark:hover:bg-[#1f232e] dark:text-[#9fa6bc] dark:hover:text-[#eff2f6]',
+      'bg-transparent hover:bg-[#f1f3f7] text-[#4b5266] hover:text-[#1b1e28] dark:hover:bg-[#22242c] dark:text-[#9da3b4] dark:hover:text-[#f4f5f8]',
     danger:
       'bg-rose-500/10 hover:bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/40',
     icon:
-      'p-1.5 rounded-md text-[#525b75] dark:text-[#9fa6bc] hover:text-[#141824] dark:hover:text-[#eff2f6] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e]',
+      'p-1.5 rounded-md text-[#4b5266] dark:text-[#9da3b4] hover:text-[#1b1e28] dark:hover:text-[#f4f5f8] hover:bg-[#f1f3f7] dark:hover:bg-[#22242c]',
   };
 
   const sizeStyles = {

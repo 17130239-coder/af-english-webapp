@@ -1,66 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,400;1,6..12,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   color-scheme: light;
-  --phoenix-body-bg: #f5f7fa;
+  --phoenix-body-bg: #f8f9fb;
   --phoenix-card-bg: #ffffff;
   --phoenix-header-bg: #ffffff;
-  --phoenix-border-color: #e3e6ed;
-  --phoenix-border-subtle: #eff2f6;
-  --phoenix-text-heading: #141824;
-  --phoenix-text-body: #31374a;
-  --phoenix-text-muted: #6e7891;
-  --phoenix-primary: #ea580c;
-  --phoenix-primary-hover: #c2410c;
-  --phoenix-primary-subtle: #fff1eb;
-  --phoenix-primary-text: #9a3412;
+  --phoenix-border-color: #e5e7ee;
+  --phoenix-border-subtle: #edf0f5;
+  --phoenix-text-heading: #1b1e28;
+  --phoenix-text-body: #3a4052;
+  --phoenix-text-muted: #6b7285;
+  --phoenix-primary: #f97316;
+  --phoenix-primary-hover: #ea580c;
+  --phoenix-primary-subtle: #fff7ed;
+  --phoenix-primary-text: #c2410c;
   --phoenix-primary-border: #fed7aa;
-  --phoenix-success: #25b003;
-  --phoenix-success-subtle: #d9fbd0;
-  --phoenix-success-text: #1c6c09;
-  --phoenix-success-border: #90d67f;
-  --phoenix-warning: #e5780b;
-  --phoenix-warning-subtle: #ffefca;
-  --phoenix-warning-text: #bc3803;
-  --phoenix-warning-border: #ffcc85;
-  --phoenix-danger: #fa3b1d;
-  --phoenix-danger-subtle: #ffe0db;
-  --phoenix-danger-text: #b81800;
-  --phoenix-danger-border: #f48270;
+  --phoenix-success: #10b981;
+  --phoenix-success-subtle: #ecfdf5;
+  --phoenix-success-text: #047857;
+  --phoenix-success-border: #a7f3d0;
+  --phoenix-warning: #f59e0b;
+  --phoenix-warning-subtle: #fffbeb;
+  --phoenix-warning-text: #b45309;
+  --phoenix-warning-border: #fde68a;
+  --phoenix-danger: #f43f5e;
+  --phoenix-danger-subtle: #fff1f2;
+  --phoenix-danger-text: #be123c;
+  --phoenix-danger-border: #fecdd3;
   --background: var(--phoenix-body-bg);
   --foreground: var(--phoenix-text-body);
 }
 
 .dark {
   color-scheme: dark;
-  --phoenix-body-bg: #0f111a;
-  --phoenix-card-bg: #141824;
-  --phoenix-header-bg: #141824;
-  --phoenix-border-color: #272f3d;
-  --phoenix-border-subtle: #1c2231;
-  --phoenix-text-heading: #eff2f6;
-  --phoenix-text-body: #9fa6bc;
-  --phoenix-text-muted: #6e7891;
-  --phoenix-primary: #ea580c;
+  --phoenix-body-bg: #141519;
+  --phoenix-card-bg: #1c1d23;
+  --phoenix-header-bg: #1c1d23;
+  --phoenix-border-color: #2a2c35;
+  --phoenix-border-subtle: #23242c;
+  --phoenix-text-heading: #f4f5f8;
+  --phoenix-text-body: #9da3b4;
+  --phoenix-text-muted: #6f7587;
+  --phoenix-primary: #f97316;
   --phoenix-primary-hover: #fb923c;
-  --phoenix-primary-subtle: #2b170e;
+  --phoenix-primary-subtle: rgba(249, 115, 22, 0.12);
   --phoenix-primary-text: #fb923c;
-  --phoenix-primary-border: #6c3216;
-  --phoenix-success: #25b003;
-  --phoenix-success-subtle: #1d2527;
-  --phoenix-success-text: #90d67f;
-  --phoenix-success-border: #354739;
-  --phoenix-warning: #e5780b;
-  --phoenix-warning-subtle: #262527;
-  --phoenix-warning-text: #ffcc85;
-  --phoenix-warning-border: #51453a;
-  --phoenix-danger: #fa3b1d;
-  --phoenix-danger-subtle: #241f25;
-  --phoenix-danger-text: #f48270;
-  --phoenix-danger-border: #4c3233;
+  --phoenix-primary-border: rgba(249, 115, 22, 0.25);
+  --phoenix-success: #10b981;
+  --phoenix-success-subtle: rgba(16, 185, 129, 0.12);
+  --phoenix-success-text: #6ee7b7;
+  --phoenix-success-border: rgba(16, 185, 129, 0.25);
+  --phoenix-warning: #f59e0b;
+  --phoenix-warning-subtle: rgba(245, 158, 11, 0.12);
+  --phoenix-warning-text: #fcd34d;
+  --phoenix-warning-border: rgba(245, 158, 11, 0.25);
+  --phoenix-danger: #f43f5e;
+  --phoenix-danger-subtle: rgba(244, 63, 94, 0.12);
+  --phoenix-danger-text: #fda4af;
+  --phoenix-danger-border: rgba(244, 63, 94, 0.25);
   --background: var(--phoenix-body-bg);
   --foreground: var(--phoenix-text-body);
 }
@@ -69,7 +69,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--phoenix-primary);
-  --font-sans: 'Nunito Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
 }
 
@@ -129,16 +129,16 @@ body {
 .phoenix-card {
   background-color: var(--phoenix-card-bg);
   border: 1px solid var(--phoenix-border-color);
-  border-radius: 0.625rem;
+  border-radius: 0.75rem;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .phoenix-card:hover {
-  border-color: #cbd0dd;
+  border-color: #cbd2df;
 }
 
 .dark .phoenix-card:hover {
-  border-color: #3e465b;
+  border-color: #3b3e4c;
 }
 
 /* Subtle Scrollbar conforming to Evondev UI/UX principles */
@@ -152,14 +152,14 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd0dd;
+  background: #cbd2df;
   border-radius: 9999px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #373e53;
+  background: #333644;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9fa6bc;
+  background: #9aa1b4;
 }

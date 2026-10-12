@@ -16,8 +16,8 @@ export function StatsSummary({ stats, isLoading = false }: StatsSummaryProps) {
             key={i}
             className="phoenix-card p-4 sm:p-5 flex flex-col justify-between h-24"
           >
-            <div className="h-4 bg-[#eff2f6] dark:bg-[#1f232e] w-1/2 rounded" />
-            <div className="h-7 bg-[#eff2f6] dark:bg-[#1f232e] w-1/3 rounded mt-2" />
+            <div className="h-4 bg-[#f1f3f7] dark:bg-[#252730] w-1/2 rounded" />
+            <div className="h-7 bg-[#f1f3f7] dark:bg-[#252730] w-1/3 rounded mt-2" />
           </div>
         ))}
       </div>
@@ -34,7 +34,7 @@ export function StatsSummary({ stats, isLoading = false }: StatsSummaryProps) {
       badge: 'Bộ nhớ từ',
       badgeClass: 'badge-phoenix-primary',
       icon: BookOpen,
-      iconColor: 'text-[#ea580c]',
+      iconColor: 'text-[#f97316]',
     },
     {
       title: 'Đã dịch nghĩa',
@@ -42,7 +42,7 @@ export function StatsSummary({ stats, isLoading = false }: StatsSummaryProps) {
       badge: `${syncRate}% hoàn thành`,
       badgeClass: 'badge-phoenix-success',
       icon: CheckCircle,
-      iconColor: 'text-[#25b003]',
+      iconColor: 'text-emerald-500',
     },
     {
       title: 'Đã đánh dấu sao',
@@ -58,7 +58,7 @@ export function StatsSummary({ stats, isLoading = false }: StatsSummaryProps) {
       badge: 'Nguồn học',
       badgeClass: 'badge-phoenix-secondary',
       icon: Video,
-      iconColor: 'text-[#525b75] dark:text-[#9fa6bc]',
+      iconColor: 'text-[#4b5266] dark:text-[#9da3b4]',
     },
   ];
 
@@ -72,14 +72,14 @@ export function StatsSummary({ stats, isLoading = false }: StatsSummaryProps) {
             className="phoenix-card p-4 sm:p-5 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold text-[#6e7891] dark:text-[#8a94ad] truncate">
+              <span className="text-xs font-semibold text-[#6b7285] dark:text-[#7d8498] truncate">
                 {item.title}
               </span>
               <Icon className={`w-4 h-4 ${item.iconColor} shrink-0`} />
             </div>
 
             <div className="mt-3 flex items-baseline justify-between gap-2">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#141824] dark:text-[#eff2f6] tabular-nums tracking-tight">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#1b1e28] dark:text-[#f4f5f8] tabular-nums tracking-tight">
                 {item.value}
               </span>
               <span className={`badge-phoenix ${item.badgeClass} text-[10px]`}>

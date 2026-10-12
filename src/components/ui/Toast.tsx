@@ -40,24 +40,24 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className="pointer-events-auto flex items-center justify-between gap-3 px-3.5 py-2.5 bg-white dark:bg-[#141824] text-[#141824] dark:text-[#eff2f6] text-xs sm:text-sm border border-[#e3e6ed] dark:border-[#272f3d] rounded-lg shadow-lg animate-in slide-in-from-bottom-2 fade-in duration-150"
+            className="pointer-events-auto flex items-center justify-between gap-3 px-3.5 py-2.5 bg-white dark:bg-[#1c1d23] text-[#1b1e28] dark:text-[#f4f5f8] text-xs sm:text-sm border border-[#e5e7ee] dark:border-[#2a2c35] rounded-xl shadow-lg animate-in slide-in-from-bottom-2 fade-in duration-150"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               {toast.type === 'success' && (
-                <CheckCircle2 className="w-4 h-4 text-[#25b003] shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
               )}
               {toast.type === 'error' && (
                 <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
               )}
               {toast.type === 'info' && (
-                <Info className="w-4 h-4 text-[#ea580c] shrink-0" />
+                <Info className="w-4 h-4 text-[#f97316] shrink-0" />
               )}
               <span className="truncate font-medium">{toast.message}</span>
             </div>
             <button
               type="button"
               onClick={() => removeToast(toast.id)}
-              className="text-[#6e7891] hover:text-[#141824] dark:hover:text-white p-0.5 rounded cursor-pointer"
+              className="text-[#6b7280] hover:text-[#1b1e28] dark:hover:text-[#f4f5f8] p-0.5 rounded cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </button>

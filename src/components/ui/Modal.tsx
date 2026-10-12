@@ -53,18 +53,18 @@ export function Modal({
         aria-hidden="true"
       />
       <div
-        className={`relative w-full ${maxWidthStyles[maxWidth]} bg-white dark:bg-[#141824] border border-[#e3e6ed] dark:border-[#272f3d] rounded-xl text-[#141824] dark:text-[#eff2f6] shadow-xl overflow-hidden z-10 font-sans transition-all duration-150`}
+        className={`relative w-full ${maxWidthStyles[maxWidth]} bg-white dark:bg-[#1c1d23] border border-[#e5e7ee] dark:border-[#2a2c35] rounded-xl text-[#1b1e28] dark:text-[#f4f5f8] shadow-xl overflow-hidden z-10 font-sans transition-all duration-150`}
         role="dialog"
         aria-modal="true"
       >
         {/* Header Bar */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#e3e6ed] dark:border-[#272f3d] bg-white dark:bg-[#141824]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#e5e7ee] dark:border-[#2a2c35] bg-white dark:bg-[#1c1d23]">
           <div className="min-w-0 pr-3">
-            <h2 className="text-base sm:text-lg font-bold text-[#141824] dark:text-[#eff2f6] truncate">
+            <h2 className="text-base sm:text-lg font-bold text-[#1b1e28] dark:text-[#f4f5f8] truncate">
               {title}
             </h2>
             {description && (
-              <p className="text-xs text-[#6e7891] dark:text-[#8a94ad] truncate mt-0.5">
+              <p className="text-xs text-[#6b7285] dark:text-[#7d8498] truncate mt-0.5">
                 {description}
               </p>
             )}
@@ -73,7 +73,7 @@ export function Modal({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[#6e7891] hover:text-[#141824] dark:text-[#8a94ad] dark:hover:text-[#eff2f6] hover:bg-[#eff2f6] dark:hover:bg-[#1f232e] cursor-pointer transition-colors"
+            className="p-1.5 rounded-lg text-[#6b7285] hover:text-[#1b1e28] dark:text-[#7d8498] dark:hover:text-[#f4f5f8] hover:bg-[#f1f3f7] dark:hover:bg-[#252730] cursor-pointer transition-colors"
             title="Đóng (Esc)"
           >
             <X className="w-5 h-5" />
