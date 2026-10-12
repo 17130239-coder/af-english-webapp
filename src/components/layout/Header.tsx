@@ -34,11 +34,6 @@ export function Header({
             <span className="text-base font-bold text-[var(--text-main)] tracking-tight truncate">
               AF English
             </span>
-            {totalCards > 0 && (
-              <span className="hidden sm:inline-block text-xs font-medium text-[var(--text-faint)]">
-                · {totalCards} câu
-              </span>
-            )}
           </div>
         </div>
 
