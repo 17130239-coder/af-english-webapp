@@ -93,14 +93,12 @@ export function CardGrid({
   const hasMore = visibleCards.length < cards.length;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <div
         className={
           layoutMode === 'grid'
             ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4'
-            : layoutMode === 'tape'
-            ? 'flex flex-col space-y-3 max-w-3xl mx-auto'
-            : 'flex flex-col space-y-2'
+            : 'flex flex-col'
         }
       >
         {visibleCards.map((card) => (

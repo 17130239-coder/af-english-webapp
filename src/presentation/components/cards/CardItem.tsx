@@ -8,12 +8,9 @@ import {
   Copy,
   Check,
   Star,
-  ChevronDown,
-  ChevronUp,
   Edit2,
   Trash2,
   Play,
-  Lightbulb,
 } from 'lucide-react';
 import {
   parseYouTubeTimestamp,
@@ -37,23 +34,15 @@ export function CardItem({
   onToggleFavorite,
   onEdit,
   onDelete,
-  layoutMode = 'grid',
+  layoutMode = 'tape',
 }: CardItemProps) {
   const { showToast } = useToast();
   const [copiedText, setCopiedText] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
 
   const ytSeconds = parseYouTubeTimestamp(card.url);
   const timeFormatted = ytSeconds !== null ? formatVideoTime(ytSeconds) : null;
   const textSegments = splitByPhrase(card.text, card.keyPhrase);
-
-  const hasContextDetails = Boolean(
-    card.explanation ||
-    (card.examples && card.examples.length > 0) ||
-    card.exampleSentence ||
-    (card.synonyms && card.synonyms.length > 0)
-  );
 
   const handleCopyText = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -74,45 +63,19 @@ export function CardItem({
   };
 
   /* -------------------------------------------------------------
-   * 1. COMPACT VIEW (Dense table row)
+   * 1. MINIMALIST LIST VIEW (Default / Less is More 2-Element Rule)
    * ------------------------------------------------------------- */
-  if (layoutMode === 'compact') {
+  if (layoutMode === 'tape' || layoutMode === 'compact') {
     return (
       <article
-        className={`notebook-card px-4 py-2.5 flex flex-col md:flex-row md:items-center justify-between gap-2.5 ${
-          card.isFavorite ? 'border-amber-400/60 dark:border-amber-600/50' : ''
-        }`}
+        onClick={() => onEdit(card)}
+        className="group relative py-3.5 px-3 sm:px-4 border-b border-[var(--border-subtle)] hover:bg-[var(--bg-card)] transition-colors cursor-pointer flex items-center justify-between gap-4 font-sans select-none"
       >
-        <div className="flex-1 min-w-0 space-y-0.5">
-          <div className="flex items-center gap-2 text-xs">
-            {timeFormatted && card.url ? (
-              <a
-                href={card.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Mở video YouTube tại ${timeFormatted}`}
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--accent)] hover:underline"
-              >
-                <Play className="w-2.5 h-2.5 fill-current" />
-                <span>{timeFormatted}</span>
-              </a>
-            ) : null}
-
-            {card.keyPhrase && (
-              <span className="font-semibold text-[var(--accent-text)] dark:text-[var(--accent)] truncate">
-                {card.keyPhrase}
-              </span>
-            )}
-
-            {card.videoTitle && (
-              <span className="text-[11px] text-[var(--text-faint)] truncate max-w-xs">
-                · {cleanTitle(card.videoTitle)}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3">
-            <p className="text-sm font-medium text-[var(--text-main)] truncate">
+        {/* Core 2 Elements: English (with keyphrase) & Vietnamese translation */}
+        <div className="flex-1 min-w-0 space-y-1">
+          {/* Element 1: English Sentence / Vocabulary */}
+          <div className="flex items-baseline gap-2 min-w-0">
+            <p className="text-sm sm:text-base font-semibold text-[var(--text-main)] truncate tracking-tight">
               {textSegments.map((seg, idx) =>
                 seg.match ? (
                   <mark
@@ -127,47 +90,68 @@ export function CardItem({
               )}
             </p>
 
-            {card.translation && (
-              <span className="text-xs text-[var(--text-muted)] italic truncate shrink-0 max-w-sm">
-                &quot;{card.translation}&quot;
-              </span>
+            {timeFormatted && card.url && (
+              <a
+                href={card.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                title={`Mở video YouTube tại ${timeFormatted}`}
+                className="inline-flex items-center gap-0.5 text-[11px] font-mono font-medium text-[var(--accent)] hover:underline shrink-0"
+              >
+                <Play className="w-2.5 h-2.5 fill-current" />
+                <span>{timeFormatted}</span>
+              </a>
             )}
           </div>
+
+          {/* Element 2: Vietnamese Translation */}
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] truncate">
+            {card.translation ||
+              (card.phraseTranslation
+                ? `${card.keyPhrase}: ${card.phraseTranslation}`
+                : 'Chưa có bản dịch')}
+          </p>
         </div>
 
-        {/* Quiet controls */}
-        <div className="flex items-center gap-1 shrink-0 self-end md:self-center">
+        {/* Quiet Actions: Hover to Reveal on Desktop */}
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 flex items-center gap-1 shrink-0"
+        >
           <button
             type="button"
             onClick={(e) => handleSpeak(e, card.text, 1.0)}
-            className={`p-1.5 rounded-md cursor-pointer transition-colors ${
-              isPlayingAudio
-                ? 'text-[var(--accent)] bg-[var(--accent-subtle)]'
-                : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)]'
+            className={`p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors ${
+              isPlayingAudio ? 'text-[var(--accent)]' : ''
             }`}
             title="Nghe phát âm"
           >
-            <Volume2 className="w-4 h-4" />
+            <Volume2 className={`w-4 h-4 ${isPlayingAudio ? 'animate-pulse' : ''}`} />
           </button>
 
           <button
             type="button"
             onClick={handleCopyText}
-            className="p-1.5 rounded-md text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
             title="Sao chép"
           >
-            {copiedText ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
+            {copiedText ? (
+              <Check className="w-4 h-4 text-emerald-500" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
           </button>
 
           <button
             type="button"
             onClick={() => onToggleFavorite(card.id, !card.isFavorite)}
-            className={`p-1.5 rounded-md cursor-pointer transition-colors ${
+            className={`p-1.5 rounded-lg cursor-pointer transition-colors ${
               card.isFavorite
                 ? 'text-amber-500'
-                : 'text-[var(--text-faint)] hover:text-amber-500'
+                : 'text-[var(--text-muted)] hover:text-amber-500 hover:bg-[var(--bg-muted)]'
             }`}
-            title={card.isFavorite ? 'Bỏ yêu thích' : 'Yêu thích'}
+            title={card.isFavorite ? 'Bỏ yêu thích' : 'Đánh dấu yêu thích'}
           >
             <Star className={`w-4 h-4 ${card.isFavorite ? 'fill-current' : ''}`} />
           </button>
@@ -175,8 +159,8 @@ export function CardItem({
           <button
             type="button"
             onClick={() => onEdit(card)}
-            className="p-1.5 rounded-md text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
-            title="Sửa"
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
+            title="Chỉnh sửa & xem ví dụ"
           >
             <Edit2 className="w-3.5 h-3.5" />
           </button>
@@ -186,8 +170,8 @@ export function CardItem({
             onClick={() => {
               if (confirm('Bạn có chắc muốn xoá câu này?')) onDelete(card.id);
             }}
-            className="p-1.5 rounded-md text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 cursor-pointer transition-colors"
-            title="Xoá"
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-rose-500 hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
+            title="Xoá câu"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
@@ -197,251 +181,123 @@ export function CardItem({
   }
 
   /* -------------------------------------------------------------
-   * 2. GRID & TAPE VIEW: Human-crafted Index Card
+   * 2. MINIMALIST GRID VIEW (2-Element Rule & Hover to reveal)
    * ------------------------------------------------------------- */
   return (
     <article
-      className={`notebook-card p-5 flex flex-col justify-between ${
-        card.isFavorite ? 'border-amber-400/60 dark:border-amber-600/50 shadow-2xs' : 'shadow-2xs'
+      onClick={() => onEdit(card)}
+      className={`group relative p-4.5 rounded-2xl border transition-all cursor-pointer font-sans select-none flex flex-col justify-between ${
+        card.isFavorite
+          ? 'border-amber-400/50 bg-[var(--bg-card)]'
+          : 'border-[var(--border-subtle)] hover:border-[var(--border-default)] bg-[var(--bg-card)]'
       }`}
     >
-      <div className="space-y-3">
-        {/* Card Header: Video Source Breadcrumb & Actions */}
-        <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[var(--border-subtle)]">
-          <div className="flex items-center gap-1.5 min-w-0 text-xs text-[var(--text-muted)]">
-            {card.url ? (
-              <a
-                href={card.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Mở YouTube: ${cleanTitle(card.videoTitle)}`}
-                className="hover:text-[var(--text-main)] truncate transition-colors max-w-[200px] sm:max-w-[260px]"
+      <div className="space-y-2">
+        {/* Source Video & Timestamp Link */}
+        <div className="flex items-center justify-between text-xs text-[var(--text-muted)] pb-1">
+          <span className="truncate max-w-[180px] sm:max-w-[220px] text-[11px] text-[var(--text-faint)]">
+            {cleanTitle(card.videoTitle) || 'YouTube Video'}
+          </span>
+
+          {timeFormatted && card.url && (
+            <a
+              href={card.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              title={`Mở video tại ${timeFormatted}`}
+              className="inline-flex items-center gap-0.5 text-[11px] font-mono font-medium text-[var(--accent)] hover:underline shrink-0"
+            >
+              <Play className="w-2.5 h-2.5 fill-current" />
+              <span>{timeFormatted}</span>
+            </a>
+          )}
+        </div>
+
+        {/* Element 1: English Sentence */}
+        <p className="text-base font-semibold text-[var(--text-main)] leading-snug tracking-tight">
+          {textSegments.map((seg, idx) =>
+            seg.match ? (
+              <mark
+                key={idx}
+                className="bg-[var(--highlight-bg)] text-[var(--highlight-text)] font-semibold px-1 py-0.2 rounded mx-0.5"
               >
-                {cleanTitle(card.videoTitle) || 'YouTube'}
-              </a>
+                {seg.text}
+              </mark>
             ) : (
-              <span className="truncate max-w-[200px] sm:max-w-[260px]">
-                {cleanTitle(card.videoTitle) || 'Thủ công'}
-              </span>
-            )}
+              <span key={idx}>{seg.text}</span>
+            )
+          )}
+        </p>
 
-            {timeFormatted && card.url && (
-              <>
-                <span className="text-[var(--text-faint)]">·</span>
-                <a
-                  href={card.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={`Phát tại ${timeFormatted}`}
-                  className="inline-flex items-center gap-0.5 font-medium text-[var(--accent)] hover:underline shrink-0"
-                >
-                  <Play className="w-2.5 h-2.5 fill-current" />
-                  <span>{timeFormatted}</span>
-                </a>
-              </>
-            )}
-          </div>
+        {/* Element 2: Vietnamese Translation */}
+        <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+          {card.translation || card.phraseTranslation || 'Chưa có bản dịch'}
+        </p>
+      </div>
 
-          {/* Quiet actions */}
-          <div className="flex items-center gap-1 shrink-0">
-            <button
-              type="button"
-              onClick={() => onToggleFavorite(card.id, !card.isFavorite)}
-              className={`p-1 rounded-md cursor-pointer transition-colors ${
-                card.isFavorite
-                  ? 'text-amber-500'
-                  : 'text-[var(--text-faint)] hover:text-amber-500'
-              }`}
-              title={card.isFavorite ? 'Bỏ yêu thích' : 'Đánh dấu yêu thích'}
-            >
-              <Star className={`w-4 h-4 ${card.isFavorite ? 'fill-current' : ''}`} />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => onEdit(card)}
-              className="p-1 text-[var(--text-faint)] hover:text-[var(--text-main)] rounded-md cursor-pointer transition-colors"
-              title="Chỉnh sửa"
-            >
-              <Edit2 className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                if (confirm('Bạn có chắc muốn xoá câu này?')) onDelete(card.id);
-              }}
-              className="p-1 text-[var(--text-faint)] hover:text-rose-600 rounded-md cursor-pointer transition-colors"
-              title="Xoá"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-
-        {/* English Sentence Hero with Highlighter */}
-        <div className="pt-0.5">
-          <p className="text-base sm:text-lg font-medium text-[var(--text-main)] leading-relaxed tracking-tight">
-            {textSegments.map((seg, idx) =>
-              seg.match ? (
-                <mark
-                  key={idx}
-                  className="bg-[var(--highlight-bg)] text-[var(--highlight-text)] font-semibold px-1.5 py-0.5 rounded mx-0.5 inline-block"
-                >
-                  {seg.text}
-                </mark>
-              ) : (
-                <span key={idx}>{seg.text}</span>
-              )
-            )}
-          </p>
-        </div>
-
-        {/* Key phrase callout line (if exists) */}
-        {card.keyPhrase && (
-          <div className="flex items-center gap-2 text-xs">
-            <span className="font-semibold text-[var(--accent-text)] dark:text-[var(--accent)]">
-              {card.keyPhrase}
-            </span>
-            {card.phraseTranslation && (
-              <span className="text-[var(--text-muted)]">
-                → {card.phraseTranslation}
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* Audio Pronunciation & Copy bar */}
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={(e) => handleSpeak(e, card.text, 1.0)}
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg cursor-pointer transition-colors ${
-                isPlayingAudio
-                  ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-2xs'
-                  : 'bg-[var(--bg-muted)] text-[var(--text-body)] hover:text-[var(--text-main)] hover:bg-[var(--border-default)]'
-              }`}
-              title="Phát âm tiếng Anh chuẩn"
-            >
-              <Volume2 className={`w-3.5 h-3.5 ${isPlayingAudio ? 'animate-pulse' : ''}`} />
-              <span>{isPlayingAudio ? 'Đang đọc...' : 'Nghe'}</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={(e) => handleSpeak(e, card.text, 0.75)}
-              className="px-2 py-1 text-[11px] font-medium rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
-              title="Nghe tốc độ chậm 0.75x"
-            >
-              0.75x
-            </button>
-          </div>
-
+      {/* Action Bar: Hover to reveal on desktop */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 pt-3 mt-3 border-t border-[var(--border-subtle)] flex items-center justify-between"
+      >
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={(e) => handleSpeak(e, card.text, 1.0)}
+            className={`p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors ${
+              isPlayingAudio ? 'text-[var(--accent)]' : ''
+            }`}
+            title="Nghe phát âm"
+          >
+            <Volume2 className="w-4 h-4" />
+          </button>
           <button
             type="button"
             onClick={handleCopyText}
-            className="p-1.5 rounded-lg text-[var(--text-faint)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
-            title="Sao chép câu tiếng Anh"
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
+            title="Sao chép"
           >
-            {copiedText ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+            {copiedText ? (
+              <Check className="w-4 h-4 text-emerald-500" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
           </button>
         </div>
 
-        {/* Vietnamese Translation (Quiet, Natural Subtitle) */}
-        {card.translation && (
-          <div className="pt-2 border-t border-[var(--border-subtle)]">
-            <p className="text-sm text-[var(--text-muted)] leading-relaxed">
-              &quot;{card.translation}&quot;
-            </p>
-          </div>
-        )}
-
-        {/* Expandable Context Details (Grammar, Examples, Synonyms) */}
-        {hasContextDetails && (
-          <div className="pt-1">
-            <button
-              type="button"
-              onClick={() => setShowDetails(!showDetails)}
-              className="text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-main)] inline-flex items-center gap-1 cursor-pointer transition-colors"
-            >
-              <span>{showDetails ? 'Thu gọn chi tiết' : 'Xem ví dụ & giải thích'}</span>
-              {showDetails ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            </button>
-
-            {showDetails && (
-              <div className="mt-3 space-y-3 pt-3 border-t border-[var(--border-subtle)] text-xs">
-                {/* Grammar note */}
-                {card.explanation && (
-                  <div className="p-3 rounded-lg bg-[var(--bg-muted)] text-[var(--text-body)] flex items-start gap-2">
-                    <Lightbulb className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-                    <p className="leading-relaxed">{card.explanation}</p>
-                  </div>
-                )}
-
-                {/* Synonyms */}
-                {card.synonyms && card.synonyms.length > 0 && (
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[var(--text-muted)]">Đồng nghĩa:</span>
-                    {card.synonyms.map((syn, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={(e) => handleSpeak(e, syn, 1.0)}
-                        className="px-2 py-0.5 rounded-md bg-[var(--bg-muted)] hover:bg-[var(--border-default)] text-[var(--text-body)] cursor-pointer transition-colors"
-                        title={`Nghe: ${syn}`}
-                      >
-                        {syn}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* Examples */}
-                {((card.examples && card.examples.length > 0) || card.exampleSentence) && (
-                  <div className="space-y-2">
-                    {card.exampleSentence && (
-                      <div className="pl-2.5 border-l-2 border-[var(--border-default)] space-y-0.5">
-                        <p className="font-medium text-[var(--text-main)]">
-                          {card.exampleSentence}
-                        </p>
-                        {card.exampleTranslation && (
-                          <p className="text-[var(--text-muted)]">
-                            {card.exampleTranslation}
-                          </p>
-                        )}
-                      </div>
-                    )}
-
-                    {card.examples &&
-                      card.examples.map((ex, idx) => (
-                        <div
-                          key={idx}
-                          className="pl-2.5 border-l-2 border-[var(--border-default)] space-y-0.5"
-                        >
-                          <div className="flex items-center gap-1.5">
-                            {ex.context && (
-                              <span className="text-[10px] font-semibold text-[var(--text-faint)] uppercase tracking-wider">
-                                {ex.context}
-                              </span>
-                            )}
-                          </div>
-                          <p className="font-medium text-[var(--text-main)]">
-                            {ex.sentence}
-                          </p>
-                          {ex.translation && (
-                            <p className="text-[var(--text-muted)]">
-                              {ex.translation}
-                            </p>
-                          )}
-                        </div>
-                      ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => onToggleFavorite(card.id, !card.isFavorite)}
+            className={`p-1.5 rounded-lg cursor-pointer transition-colors ${
+              card.isFavorite
+                ? 'text-amber-500'
+                : 'text-[var(--text-muted)] hover:text-amber-500 hover:bg-[var(--bg-muted)]'
+            }`}
+            title={card.isFavorite ? 'Bỏ yêu thích' : 'Yêu thích'}
+          >
+            <Star className={`w-4 h-4 ${card.isFavorite ? 'fill-current' : ''}`} />
+          </button>
+          <button
+            type="button"
+            onClick={() => onEdit(card)}
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
+            title="Chỉnh sửa & xem chi tiết"
+          >
+            <Edit2 className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (confirm('Bạn có chắc muốn xoá câu này?')) onDelete(card.id);
+            }}
+            className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-rose-500 hover:bg-[var(--bg-muted)] cursor-pointer transition-colors"
+            title="Xoá"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </article>
   );

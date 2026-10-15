@@ -1,208 +1,37 @@
-'use client';
+import React from 'react';
+import { Container } from '@/infrastructure/di/container';
+import { ToastProvider } from '@/presentation/components/ui/Toast';
+import { MainApp } from '@/presentation/components/MainApp';
+import { SubtitleCard, CardStats } from '@/core/entities/card.entity';
 
-import React, { useState, useEffect } from 'react';
-import { SubtitleCard } from '@/core/entities/card.entity';
-import { CreateCardDTO, UpdateCardDTO } from '@/core/dtos/card.dto';
-import { useCards } from '@/presentation/hooks/useCards';
-import { useCardFilters } from '@/presentation/hooks/useCardFilters';
-import { useTheme } from '@/presentation/hooks/useTheme';
-import { ToastProvider, useToast } from '@/presentation/components/ui/Toast';
-import { Header } from '@/presentation/components/layout/Header';
-import { StatsSummary } from '@/presentation/components/stats/StatsSummary';
-import { FilterBar } from '@/presentation/components/filters/FilterBar';
-import { CardGrid } from '@/presentation/components/cards/CardGrid';
-import { CardGridSkeleton } from '@/presentation/components/cards/CardSkeleton';
-import { AddCardModal } from '@/presentation/components/cards/AddCardModal';
-import { CardDetailModal } from '@/presentation/components/cards/CardDetailModal';
-import { FlashcardModal } from '@/presentation/components/study/FlashcardModal';
+export const dynamic = 'force-dynamic';
 
-function MainApp() {
-  const { showToast } = useToast();
-  const { theme, toggleTheme } = useTheme();
-
-  const {
-    cards,
-    isLoading,
-    createCard,
-    updateCard,
-    toggleFavorite,
-    deleteCard,
-    exportCards,
-  } = useCards();
-
-  const {
-    filters,
-    filteredCards,
-    stats,
-    distinctVideos,
-    updateFilters,
-    resetFilters,
-    isFiltered,
-  } = useCardFilters(cards);
-
-  // Modals state
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isStudyModalOpen, setIsStudyModalOpen] = useState(false);
-  const [isStudyMounted, setIsStudyMounted] = useState(false);
-  const [editingCard, setEditingCard] = useState<SubtitleCard | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  const handleOpenStudy = () => {
-    setIsStudyMounted(true);
-    setIsStudyModalOpen(true);
+export default async function HomePage() {
+  let initialCards: SubtitleCard[] = [];
+  let initialStats: CardStats = {
+    total: 0,
+    translated: 0,
+    pending: 0,
+    favorites: 0,
+    totalVideos: 0,
   };
+  let initialVideos: string[] = [];
 
-  const handleCloseStudy = () => {
-    setIsStudyModalOpen(false);
-    setTimeout(() => {
-      setIsStudyMounted(false);
-    }, 200);
-  };
+  try {
+    initialCards = await Container.getCardsUseCase.execute(500);
+    initialStats = Container.calculateStatsUseCase.execute(initialCards);
+    initialVideos = Container.filterCardsUseCase.getDistinctVideos(initialCards);
+  } catch (error) {
+    console.error('[SSR] Failed to fetch initial cards on server:', error);
+  }
 
-  const handleOpenEdit = (card: SubtitleCard) => {
-    setEditingCard(card);
-    setIsEditModalOpen(true);
-  };
-
-  const handleCloseEdit = () => {
-    setIsEditModalOpen(false);
-    setTimeout(() => {
-      setEditingCard(null);
-    }, 200);
-  };
-
-  // Global search shortcut (⌘K or Ctrl+K)
-  useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement | null;
-        searchInput?.focus();
-      }
-    };
-    window.addEventListener('keydown', handleGlobalKeyDown);
-    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-  }, []);
-
-  const handleToggleFavorite = async (id: string, isFav: boolean) => {
-    try {
-      await toggleFavorite(id, isFav);
-      showToast(isFav ? 'Đã thêm vào yêu thích' : 'Đã bỏ yêu thích', 'info');
-    } catch {
-      showToast('Lỗi khi cập nhật trạng thái yêu thích', 'error');
-    }
-  };
-
-  const handleCreateCard = async (dto: CreateCardDTO) => {
-    try {
-      await createCard(dto);
-      showToast('Đã thêm thẻ mới thành công', 'success');
-    } catch (err) {
-      showToast(err instanceof Error ? err.message : 'Lỗi khi tạo thẻ', 'error');
-      throw err;
-    }
-  };
-
-  const handleUpdateCard = async (id: string, dto: UpdateCardDTO) => {
-    try {
-      await updateCard(id, dto);
-      showToast('Cập nhật thẻ thành công', 'success');
-    } catch (err) {
-      showToast(err instanceof Error ? err.message : 'Lỗi khi cập nhật thẻ', 'error');
-      throw err;
-    }
-  };
-
-  const handleDeleteCard = async (id: string) => {
-    try {
-      await deleteCard(id);
-      showToast('Đã xóa thẻ khỏi hệ thống', 'info');
-    } catch {
-      showToast('Lỗi khi xóa thẻ', 'error');
-    }
-  };
-
-  const handleExport = () => {
-    const ok = exportCards();
-    if (!ok) {
-      showToast('Chưa có dữ liệu để xuất file', 'info');
-    } else {
-      showToast(`Đã xuất ${cards.length} thẻ sang file JSON`, 'success');
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-page)] text-[var(--text-body)] antialiased font-sans">
-      <Header
-        onOpenAddModal={() => setIsAddModalOpen(true)}
-        onOpenStudyModal={handleOpenStudy}
-        onExport={handleExport}
-        totalCards={cards.length}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-      />
-
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6">
-        {/* Subtle metrics summary */}
-        <StatsSummary stats={stats} isLoading={isLoading} />
-
-        {/* Filter & Search Bar */}
-        <FilterBar
-          filters={filters}
-          onChange={updateFilters}
-          stats={stats}
-          videos={distinctVideos}
-        />
-
-        {/* Card Stream / Grid */}
-        {isLoading ? (
-          <CardGridSkeleton />
-        ) : (
-          <CardGrid
-            cards={filteredCards}
-            onToggleFavorite={handleToggleFavorite}
-            onEdit={handleOpenEdit}
-            onDelete={handleDeleteCard}
-            onResetFilters={resetFilters}
-            isFiltered={isFiltered}
-            layoutMode={filters.layoutMode}
-          />
-        )}
-      </main>
-
-      {/* Modals */}
-      <AddCardModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSubmit={handleCreateCard}
-      />
-
-      {editingCard && (
-        <CardDetailModal
-          key={editingCard.id}
-          isOpen={isEditModalOpen}
-          onClose={handleCloseEdit}
-          card={editingCard}
-          onUpdate={handleUpdateCard}
-        />
-      )}
-
-      {isStudyMounted && (
-        <FlashcardModal
-          isOpen={isStudyModalOpen}
-          onClose={handleCloseStudy}
-          cards={filteredCards.length > 0 ? filteredCards : cards}
-          onToggleFavorite={handleToggleFavorite}
-        />
-      )}
-    </div>
-  );
-}
-
-export default function HomePage() {
   return (
     <ToastProvider>
-      <MainApp />
+      <MainApp
+        initialCards={initialCards}
+        initialStats={initialStats}
+        initialVideos={initialVideos}
+      />
     </ToastProvider>
   );
 }

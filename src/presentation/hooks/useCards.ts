@@ -18,11 +18,17 @@ interface UseCardsReturn {
   exportCards: () => boolean;
 }
 
-export function useCards(): UseCardsReturn {
-  const [cards, setCards] = useState<SubtitleCard[]>([]);
-  const [stats, setStats] = useState<CardStats | null>(null);
-  const [videos, setVideos] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+interface UseCardsOptions {
+  initialCards?: SubtitleCard[];
+  initialStats?: CardStats | null;
+  initialVideos?: string[];
+}
+
+export function useCards(options?: UseCardsOptions): UseCardsReturn {
+  const [cards, setCards] = useState<SubtitleCard[]>(options?.initialCards || []);
+  const [stats, setStats] = useState<CardStats | null>(options?.initialStats || null);
+  const [videos, setVideos] = useState<string[]>(options?.initialVideos || []);
+  const [isLoading, setIsLoading] = useState(!options?.initialCards);
   const [error, setError] = useState<string | null>(null);
 
   const fetchCards = useCallback(async () => {
@@ -48,6 +54,11 @@ export function useCards(): UseCardsReturn {
   }, []);
 
   useEffect(() => {
+    // If cards were already supplied via SSR, do not fetch again on mount
+    if (options?.initialCards && options.initialCards.length > 0) {
+      return;
+    }
+
     let ignore = false;
     async function init() {
       try {
@@ -64,7 +75,9 @@ export function useCards(): UseCardsReturn {
           setError(err instanceof Error ? err.message : 'Lỗi kết nối máy chủ');
         }
       } finally {
-        if (!ignore) setIsLoading(false);
+        if (!ignore) {
+          setIsLoading(false);
+        }
       }
     }
 
@@ -72,7 +85,7 @@ export function useCards(): UseCardsReturn {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [options?.initialCards]);
 
   const createCard = useCallback(async (dto: CreateCardDTO): Promise<SubtitleCard> => {
     const res = await fetch('/api/cards', {
