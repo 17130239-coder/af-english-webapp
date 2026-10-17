@@ -413,7 +413,7 @@ npm install
 Tạo file `.env.local` tại thư mục gốc của dự án:
 ```env
 # Kết nối Neon Postgres (Lấy từ project Neon Cloud của bạn)
-DATABASE_URL=postgresql://neondb_owner:npg_yXc2iSbMx1IK@ep-super-cake-az82uvk1-pooler.c-3.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+DATABASE_URL=postgresql://neondb_owner:YOUR_PASSWORD@ep-your-database.neon.tech/neondb?sslmode=require
 ```
 
 ### 4. Khởi chạy môi trường phát triển (Development)
