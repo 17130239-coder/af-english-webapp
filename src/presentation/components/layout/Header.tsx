@@ -54,8 +54,8 @@ export function Header({
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
         {/* Brand */}
         <div className="flex items-center gap-2.5 shrink-0 select-none">
-          <div className="w-7 h-7 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center font-bold text-xs tracking-tight shadow-xs shrink-0">
-            AF
+          <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-[var(--border-subtle)]">
+            <img src="/icons/icon32.png" alt="AF English Logo" className="w-full h-full object-contain" />
           </div>
           <span className="text-sm font-bold text-[var(--text-main)] tracking-tight hidden sm:inline">
             AF English
