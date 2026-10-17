@@ -9,7 +9,11 @@ export function parseYouTubeTimestamp(url?: string): number | null {
   if (!url) return null;
   try {
     const urlObj = new URL(url);
-    const t = urlObj.searchParams.get('t');
+    let t = urlObj.searchParams.get('t') || urlObj.searchParams.get('start');
+    if (!t && urlObj.hash) {
+      const hashMatch = urlObj.hash.match(/[#&?](?:t|start)=([^&]+)/i);
+      if (hashMatch) t = hashMatch[1];
+    }
     if (!t) return null;
 
     if (/^\d+s?$/i.test(t)) {
@@ -74,21 +78,65 @@ export function formatRelativeTime(timestamp?: number | string): string {
 
 /**
  * Splits text into segments around a matched phrase for safe React rendering.
+ * Normalizes any trailing spaces before punctuation (e.g. "right there ." -> "right there.")
  */
 export function splitByPhrase(text: string, phrase?: string): Array<{ text: string; match: boolean }> {
+  if (!text) return [];
+  // Normalize whitespace before punctuation marks: e.g. "right there ." -> "right there."
+  const normalized = text.replace(/\s+([.,!?;:])/g, '$1');
+
   if (!phrase || !phrase.trim()) {
-    return [{ text, match: false }];
+    return [{ text: normalized, match: false }];
   }
 
   const cleanPhrase = phrase.trim();
   const escaped = cleanPhrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(`(${escaped})`, 'gi');
-  const parts = text.split(regex);
+  const exactRegex = new RegExp(`(${escaped})`, 'gi');
 
-  return parts.map((part) => ({
-    text: part,
-    match: part.toLowerCase() === cleanPhrase.toLowerCase(),
-  }));
+  if (exactRegex.test(normalized)) {
+    const parts = normalized.split(exactRegex);
+    return parts.map((part) => ({
+      text: part,
+      match: part.toLowerCase() === cleanPhrase.toLowerCase(),
+    }));
+  }
+
+  // Fallback for phrases with hyphens (e.g. "self-sustainable" vs "self- sustainable")
+  // or placeholders (e.g. "something", "someone", "sth", "sb", "one's")
+  const hasPlaceholders = /\b(someone|something|somebody|sth|sb|one's|anything|anybody)\b/i.test(cleanPhrase);
+  const hasHyphen = cleanPhrase.includes('-');
+
+  if (hasPlaceholders || hasHyphen) {
+    let flexiblePattern = escaped;
+    if (hasHyphen) {
+      flexiblePattern = flexiblePattern.replace(/\\-/g, '-?\\s*');
+    }
+    if (hasPlaceholders) {
+      flexiblePattern = flexiblePattern.replace(
+        /\\b(?:someone|something|somebody|sth|sb|anything|anybody)\\b/gi,
+        '[a-zA-Z0-9_\'\x27\\-]+(?:\\s+[a-zA-Z0-9_\'\x27\\-]+){0,2}'
+      );
+      flexiblePattern = flexiblePattern.replace(
+        /\\bone\\'s\\b/gi,
+        '(?:my|your|his|her|its|our|their|[a-zA-Z0-9_\'\x27\\-]+)'
+      );
+    }
+
+    try {
+      const flexRegex = new RegExp(`(${flexiblePattern})`, 'gi');
+      if (flexRegex.test(normalized)) {
+        const parts = normalized.split(flexRegex);
+        return parts.map((part) => ({
+          text: part,
+          match: flexRegex.test(part),
+        }));
+      }
+    } catch {
+      // Fallback to literal
+    }
+  }
+
+  return [{ text: normalized, match: false }];
 }
 
 /**

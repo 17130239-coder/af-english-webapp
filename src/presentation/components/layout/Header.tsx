@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
+import Image from 'next/image';
 import {
   Search,
   X,
@@ -54,8 +55,8 @@ export function Header({
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
         {/* Brand */}
         <div className="flex items-center gap-2.5 shrink-0 select-none">
-          <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-[var(--border-subtle)]">
-            <img src="/icons/icon32.png" alt="AF English Logo" className="w-full h-full object-contain" />
+          <div className="w-7 h-7 rounded-lg overflow-hidden shrink-0 shadow-2xs border border-[var(--border-subtle)] relative">
+            <Image src="/icons/icon32.png" alt="AF English Logo" width={28} height={28} className="w-full h-full object-contain" priority />
           </div>
           <span className="text-sm font-bold text-[var(--text-main)] tracking-tight hidden sm:inline">
             AF English

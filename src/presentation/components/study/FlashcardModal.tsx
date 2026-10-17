@@ -28,10 +28,19 @@ export function FlashcardModal({
   cards,
   onToggleFavorite,
 }: FlashcardModalProps) {
-  const [deck, setDeck] = useState<SubtitleCard[]>(() => cards);
+  const [deck, setDeck] = useState<SubtitleCard[]>(cards);
+  const [prevCards, setPrevCards] = useState<SubtitleCard[]>(cards);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  // Sync deck when cards prop changes
+  if (prevCards !== cards) {
+    setPrevCards(cards);
+    setDeck(cards);
+    setCurrentIndex(0);
+    setIsFlipped(false);
+  }
 
   const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev < deck.length - 1 ? prev + 1 : prev));
@@ -159,7 +168,7 @@ export function FlashcardModal({
             {!isFlipped ? (
               <div className="space-y-3 text-center my-auto">
                 {currentCard.keyPhrase && (
-                  <div className="inline-block bg-[var(--highlight-bg)] text-[var(--highlight-text)] font-semibold text-xs px-2.5 py-1 rounded-md">
+                  <div className="inline-block text-amber-500 dark:text-amber-400 font-semibold text-xs px-2.5 py-1 rounded-md border border-amber-500/20 bg-amber-500/10">
                     {currentCard.keyPhrase}
                   </div>
                 )}
@@ -167,12 +176,12 @@ export function FlashcardModal({
                 <p className="text-xl sm:text-2xl font-medium text-[var(--text-main)] leading-relaxed max-w-xl mx-auto tracking-tight">
                   {segments.map((seg, idx) =>
                     seg.match ? (
-                      <mark
+                      <span
                         key={idx}
-                        className="bg-[var(--highlight-bg)] text-[var(--highlight-text)] font-semibold px-1 py-0.5 rounded mx-0.5"
+                        className="text-amber-500 dark:text-amber-400 font-semibold underline decoration-amber-500/40 underline-offset-4 bg-transparent"
                       >
                         {seg.text}
-                      </mark>
+                      </span>
                     ) : (
                       <span key={idx}>{seg.text}</span>
                     )

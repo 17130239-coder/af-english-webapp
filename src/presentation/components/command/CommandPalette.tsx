@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Search, Star, BookOpen, Clock, ArrowUpDown, Plus, Sparkles, X, Check, ArrowRight, Download } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Search, Star, BookOpen, ArrowUpDown, Plus, Sparkles, Check, Download, X, ArrowRight } from 'lucide-react';
 import { SubtitleCard } from '@/core/entities/card.entity';
-import { CardFilterState, FilterStatus, SortOrder } from '@/core/entities/filter.entity';
-import { cleanTitle } from '@/presentation/utils/formatters';
+import { CardFilterState, SortOrder } from '@/core/entities/filter.entity';
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -33,111 +32,118 @@ export function CommandPalette({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Focus input on open & reset state
+  // Focus input on open & reset state asynchronously to prevent cascading renders
   useEffect(() => {
     if (isOpen) {
-      setQuery('');
-      setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
+      const timer = setTimeout(() => {
+        setQuery('');
+        setSelectedIndex(0);
+        inputRef.current?.focus();
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 
   // Matching cards (max 6 items for clean minimalist UX)
-  const matchingCards = query.trim()
-    ? cards
-        .filter((c) => {
-          const q = query.toLowerCase();
-          return (
-            c.text.toLowerCase().includes(q) ||
-            c.translation?.toLowerCase().includes(q) ||
-            c.keyPhrase?.toLowerCase().includes(q) ||
-            c.phraseTranslation?.toLowerCase().includes(q) ||
-            c.videoTitle?.toLowerCase().includes(q)
-          );
-        })
-        .slice(0, 6)
-    : [];
+  const matchingCards = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return cards
+      .filter((c) => {
+        return (
+          c.text.toLowerCase().includes(q) ||
+          c.translation?.toLowerCase().includes(q) ||
+          c.keyPhrase?.toLowerCase().includes(q) ||
+          c.phraseTranslation?.toLowerCase().includes(q) ||
+          c.videoTitle?.toLowerCase().includes(q)
+        );
+      })
+      .slice(0, 6);
+  }, [query, cards]);
 
   // Quick Action Options
-  const actions = [
-    {
-      id: 'study',
-      label: 'Luyện tập Flashcards',
-      icon: Sparkles,
-      hint: 'Phím Space',
-      action: () => {
-        onClose();
-        onOpenStudy();
+  const actions = useMemo(
+    () => [
+      {
+        id: 'study',
+        label: 'Luyện tập Flashcards',
+        icon: Sparkles,
+        hint: 'Phím Space',
+        action: () => {
+          onClose();
+          onOpenStudy();
+        },
       },
-    },
-    {
-      id: 'add',
-      label: 'Thêm câu mới',
-      icon: Plus,
-      hint: '+',
-      action: () => {
-        onClose();
-        onOpenAdd();
+      {
+        id: 'add',
+        label: 'Thêm câu mới',
+        icon: Plus,
+        hint: '+',
+        action: () => {
+          onClose();
+          onOpenAdd();
+        },
       },
-    },
-    {
-      id: 'filter-all',
-      label: 'Xem tất cả câu',
-      icon: BookOpen,
-      hint: `${cards.length}`,
-      action: () => {
-        onUpdateFilters({ status: 'all', searchQuery: '' });
-        onClose();
+      {
+        id: 'filter-all',
+        label: 'Xem tất cả câu',
+        icon: BookOpen,
+        hint: `${cards.length}`,
+        action: () => {
+          onUpdateFilters({ status: 'all', searchQuery: '' });
+          onClose();
+        },
       },
-    },
-    {
-      id: 'filter-fav',
-      label: 'Xem câu yêu thích',
-      icon: Star,
-      hint: '★',
-      action: () => {
-        onUpdateFilters({ status: 'favorites' });
-        onClose();
+      {
+        id: 'filter-fav',
+        label: 'Xem câu yêu thích',
+        icon: Star,
+        hint: '★',
+        action: () => {
+          onUpdateFilters({ status: 'favorites' });
+          onClose();
+        },
       },
-    },
-    {
-      id: 'filter-translated',
-      label: 'Xem câu đã dịch AI',
-      icon: Check,
-      hint: 'Đã dịch',
-      action: () => {
-        onUpdateFilters({ status: 'translated' });
-        onClose();
+      {
+        id: 'filter-translated',
+        label: 'Xem câu đã dịch AI',
+        icon: Check,
+        hint: 'Đã dịch',
+        action: () => {
+          onUpdateFilters({ status: 'translated' });
+          onClose();
+        },
       },
-    },
-    {
-      id: 'sort-toggle',
-      label: `Sắp xếp: ${
-        filters.sortBy === 'newest' ? 'Mới nhất' : filters.sortBy === 'oldest' ? 'Cũ nhất' : 'A → Z'
-      }`,
-      icon: ArrowUpDown,
-      hint: 'Đổi thứ tự',
-      action: () => {
-        const nextSort: Record<SortOrder, SortOrder> = {
-          newest: 'oldest',
-          oldest: 'alphabetical',
-          alphabetical: 'newest',
-        };
-        onUpdateFilters({ sortBy: nextSort[filters.sortBy] });
-        onClose();
+      {
+        id: 'sort-toggle',
+        label: `Sắp xếp: ${
+          filters.sortBy === 'newest' ? 'Mới nhất' : filters.sortBy === 'oldest' ? 'Cũ nhất' : 'A → Z'
+        }`,
+        icon: ArrowUpDown,
+        hint: 'Đổi thứ tự',
+        action: () => {
+          const nextSort: Record<SortOrder, SortOrder> = {
+            newest: 'oldest',
+            oldest: 'alphabetical',
+            alphabetical: 'newest',
+          };
+          onUpdateFilters({ sortBy: nextSort[filters.sortBy] });
+          onClose();
+        },
       },
-    },
-    {
-      id: 'export-data',
-      label: 'Xuất dữ liệu (JSON)',
-      icon: Download,
-      hint: 'Sao lưu',
-      action: () => {
-        onClose();
-        if (onExport) onExport();
+      {
+        id: 'export-data',
+        label: 'Xuất dữ liệu (JSON)',
+        icon: Download,
+        hint: 'Sao lưu',
+        action: () => {
+          onClose();
+          if (onExport) onExport();
+        },
       },
-    },
-  ];
+    ],
+    [cards.length, filters.sortBy, onClose, onOpenStudy, onOpenAdd, onUpdateFilters, onExport]
+  );
 
   const totalItems = query.trim() ? matchingCards.length : actions.length;
 

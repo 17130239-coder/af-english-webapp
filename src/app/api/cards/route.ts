@@ -35,7 +35,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json(
+        { success: false, error: 'Dữ liệu JSON yêu cầu không hợp lệ' },
+        { status: 400 }
+      );
+    }
     const created = await Container.createCardUseCase.execute(body);
 
     return NextResponse.json(

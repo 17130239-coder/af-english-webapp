@@ -28,7 +28,13 @@ export async function GET(request: NextRequest, context: RouteContext) {
 export async function PATCH(request: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params;
-    const body = await request.json();
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json(
+        { success: false, error: 'Dữ liệu JSON yêu cầu không hợp lệ' },
+        { status: 400 }
+      );
+    }
 
     // Check if it's a toggle favorite request or general update
     if (body.isFavorite !== undefined && Object.keys(body).length === 1) {

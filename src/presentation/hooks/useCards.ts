@@ -146,8 +146,11 @@ export function useCards(options?: UseCardsOptions): UseCardsReturn {
   }, []);
 
   const deleteCard = useCallback(async (id: string): Promise<void> => {
-    const previous = [...cards];
-    setCards((prev) => prev.filter((c) => c.id !== id));
+    let removedCard: SubtitleCard | undefined;
+    setCards((prev) => {
+      removedCard = prev.find((c) => c.id === id);
+      return prev.filter((c) => c.id !== id);
+    });
 
     try {
       const res = await fetch(`/api/cards/${id}`, { method: 'DELETE' });
@@ -155,10 +158,12 @@ export function useCards(options?: UseCardsOptions): UseCardsReturn {
         throw new Error('Không thể xóa thẻ');
       }
     } catch (err) {
-      setCards(previous);
+      if (removedCard) {
+        setCards((prev) => [removedCard!, ...prev]);
+      }
       throw err;
     }
-  }, [cards]);
+  }, []);
 
   const exportCards = useCallback((): boolean => {
     if (cards.length === 0) return false;

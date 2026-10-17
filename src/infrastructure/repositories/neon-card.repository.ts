@@ -10,7 +10,7 @@ export class NeonCardRepository implements ICardRepository {
     try {
       const rows = (await sql`
         SELECT * FROM subtitles
-        ORDER BY timestamp DESC
+        ORDER BY timestamp DESC NULLS LAST
         LIMIT ${limit};
       `) as RawDatabaseCardRow[];
 

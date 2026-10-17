@@ -69,14 +69,15 @@ export class CardMapper {
     }
 
     const timestamp = Number(row.timestamp) || (row.created_at ? new Date(row.created_at).getTime() : Date.now());
+    const normalizedText = String(row.text || '').replace(/\s+([.,!?;:])/g, '$1').trim();
 
     return {
       id: String(row.id),
-      text: String(row.text || ''),
+      text: normalizedText,
       videoTitle: String(row.video_title || 'YouTube Video'),
       url: String(row.url || ''),
       timestamp,
-      keyPhrase: row.key_phrase ? String(row.key_phrase) : undefined,
+      keyPhrase: row.key_phrase ? String(row.key_phrase).trim() : undefined,
       phraseTranslation: row.phrase_translation ? String(row.phrase_translation) : undefined,
       translation: row.translation ? String(row.translation) : undefined,
       explanation: row.explanation ? String(row.explanation) : undefined,

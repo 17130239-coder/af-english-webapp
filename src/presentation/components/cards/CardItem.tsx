@@ -75,19 +75,31 @@ export function CardItem({
         <div className="flex-1 min-w-0 space-y-1">
           {/* Element 1: English Sentence / Vocabulary */}
           <div className="flex items-baseline gap-2 min-w-0">
-            <p className="text-sm sm:text-base font-semibold text-[var(--text-main)] truncate tracking-tight">
-              {textSegments.map((seg, idx) =>
-                seg.match ? (
-                  <mark
-                    key={idx}
-                    className="bg-[var(--highlight-bg)] text-[var(--highlight-text)] font-semibold px-1 py-0.2 rounded mx-0.5"
-                  >
-                    {seg.text}
-                  </mark>
-                ) : (
-                  <span key={idx}>{seg.text}</span>
-                )
-              )}
+            <p className="text-sm sm:text-base font-semibold text-[var(--text-main)] truncate tracking-tight inline-flex items-center">
+              <span className="truncate">
+                {textSegments.map((seg, idx) =>
+                  seg.match ? (
+                    <span
+                      key={idx}
+                      className="text-amber-500 dark:text-amber-400 font-semibold underline decoration-amber-500/40 underline-offset-4 bg-transparent"
+                    >
+                      {seg.text}
+                    </span>
+                  ) : (
+                    <span key={idx}>{seg.text}</span>
+                  )
+                )}
+              </span>
+              <button
+                type="button"
+                onClick={(e) => handleSpeak(e, card.text, 1.0)}
+                className={`inline-flex items-center align-middle ml-1.5 p-0.5 rounded text-[var(--text-muted)] hover:text-[var(--text-main)] shrink-0 cursor-pointer transition-colors ${
+                  isPlayingAudio ? 'text-[var(--accent)] animate-pulse' : ''
+                }`}
+                title="Nghe phát âm"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+              </button>
             </p>
 
             {timeFormatted && card.url && (
@@ -117,7 +129,7 @@ export function CardItem({
         {/* Quiet Actions: Hover to Reveal on Desktop */}
         <div
           onClick={(e) => e.stopPropagation()}
-          className="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 flex items-center gap-1 shrink-0"
+          className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100 transition-opacity duration-150 flex items-center gap-1 shrink-0"
         >
           <button
             type="button"
@@ -214,20 +226,30 @@ export function CardItem({
           )}
         </div>
 
-        {/* Element 1: English Sentence */}
+        {/* Element 1: English Sentence with inline speaker */}
         <p className="text-base font-semibold text-[var(--text-main)] leading-snug tracking-tight">
           {textSegments.map((seg, idx) =>
             seg.match ? (
-              <mark
+              <span
                 key={idx}
-                className="bg-[var(--highlight-bg)] text-[var(--highlight-text)] font-semibold px-1 py-0.2 rounded mx-0.5"
+                className="text-amber-500 dark:text-amber-400 font-semibold underline decoration-amber-500/40 underline-offset-4 bg-transparent"
               >
                 {seg.text}
-              </mark>
+              </span>
             ) : (
               <span key={idx}>{seg.text}</span>
             )
           )}
+          <button
+            type="button"
+            onClick={(e) => handleSpeak(e, card.text, 1.0)}
+            className={`inline-flex items-center align-middle ml-1.5 p-0.5 rounded text-[var(--text-muted)] hover:text-[var(--text-main)] cursor-pointer transition-colors ${
+              isPlayingAudio ? 'text-[var(--accent)] animate-pulse' : ''
+            }`}
+            title="Nghe phát âm"
+          >
+            <Volume2 className="w-3.5 h-3.5" />
+          </button>
         </p>
 
         {/* Element 2: Vietnamese Translation */}
@@ -239,7 +261,7 @@ export function CardItem({
       {/* Action Bar: Hover to reveal on desktop */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150 pt-3 mt-3 border-t border-[var(--border-subtle)] flex items-center justify-between"
+        className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-within:opacity-100 transition-opacity duration-150 pt-3 mt-3 border-t border-[var(--border-subtle)] flex items-center justify-between"
       >
         <div className="flex items-center gap-1">
           <button
