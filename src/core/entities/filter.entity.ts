@@ -23,5 +23,5 @@ export const DEFAULT_FILTER_STATE: CardFilterState = {
   status: 'all',
   selectedVideo: 'all',
   sortBy: 'newest',
-  layoutMode: 'tape',
+  layoutMode: 'grid',
 };

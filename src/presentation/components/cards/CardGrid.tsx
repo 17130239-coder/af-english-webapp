@@ -9,6 +9,8 @@ import { Button } from '@/presentation/components/ui/Button';
 
 interface CardGridProps {
   cards: SubtitleCard[];
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string) => void;
   onToggleFavorite: (id: string, isFav: boolean) => void;
   onEdit: (card: SubtitleCard) => void;
   onDelete: (id: string) => void;
@@ -17,10 +19,12 @@ interface CardGridProps {
   layoutMode?: LayoutMode;
 }
 
-const PAGE_CHUNK = 15;
+const PAGE_CHUNK = 24;
 
 export function CardGrid({
   cards,
+  selectedIds,
+  onToggleSelect,
   onToggleFavorite,
   onEdit,
   onDelete,
@@ -64,19 +68,19 @@ export function CardGrid({
 
   if (cards.length === 0) {
     return (
-      <div className="notebook-card p-10 sm:p-14 text-center my-6 select-none border-dashed">
+      <div className="rounded-xl border border-dashed border-[var(--border-default)] p-10 sm:p-14 text-center my-6 select-none bg-[var(--bg-card)]">
         <div className="w-10 h-10 mx-auto bg-[var(--bg-muted)] text-[var(--text-muted)] rounded-full flex items-center justify-center mb-3">
           <SearchX className="w-5 h-5" />
         </div>
 
         <h3 className="text-base font-semibold text-[var(--text-main)] mb-1">
-          {isFiltered ? 'Không tìm thấy câu phù hợp' : 'Chưa có dữ liệu từ vựng'}
+          {isFiltered ? 'Không tìm thấy câu phù hợp' : 'Chưa có phụ đề nào được lưu'}
         </h3>
 
         <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-sm mx-auto mb-4 leading-relaxed">
           {isFiltered
             ? 'Hãy thử thay đổi từ khoá tìm kiếm hoặc đặt lại các bộ lọc đang chọn.'
-            : 'Các câu lưu từ tiện ích AF Extension trên YouTube sẽ xuất hiện tại đây.'}
+            : 'Khi xem video trên YouTube, nhấp vào phụ đề để sao chép và đồng bộ tự động lên đây.'}
         </p>
 
         {isFiltered && onResetFilters && (
@@ -98,13 +102,15 @@ export function CardGrid({
         className={
           layoutMode === 'grid'
             ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4'
-            : 'flex flex-col'
+            : 'flex flex-col rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] overflow-hidden divide-y divide-[var(--border-subtle)]'
         }
       >
         {visibleCards.map((card) => (
           <CardItem
             key={card.id}
             card={card}
+            isSelected={selectedIds?.has(card.id)}
+            onToggleSelect={onToggleSelect}
             onToggleFavorite={onToggleFavorite}
             onEdit={onEdit}
             onDelete={onDelete}
@@ -116,7 +122,7 @@ export function CardGrid({
       <div ref={sentinelRef} className="h-4" />
 
       {cards.length > PAGE_CHUNK && (
-        <div className="notebook-card px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-sans select-none">
+        <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-sans select-none">
           <span className="text-[var(--text-muted)]">
             Hiển thị <strong className="text-[var(--text-main)] tabular-nums">{visibleCards.length}</strong> / <strong className="text-[var(--text-main)] tabular-nums">{cards.length}</strong> câu
           </span>
@@ -133,7 +139,7 @@ export function CardGrid({
                 </Button>
               </>
             ) : (
-              <span className="text-zinc-500 text-xs">
+              <span className="text-[var(--text-faint)] text-xs">
                 Đã hiển thị toàn bộ {cards.length} câu
               </span>
             )}

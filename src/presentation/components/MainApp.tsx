@@ -8,7 +8,8 @@ import { useCardFilters } from '@/presentation/hooks/useCardFilters';
 import { useTheme } from '@/presentation/hooks/useTheme';
 import { useToast } from '@/presentation/components/ui/Toast';
 import { Header } from '@/presentation/components/layout/Header';
-import { TextTabs } from '@/presentation/components/filters/TextTabs';
+import { FilterBar } from '@/presentation/components/filters/FilterBar';
+import { SelectionBar } from '@/presentation/components/cards/SelectionBar';
 import { CardGrid } from '@/presentation/components/cards/CardGrid';
 import { CardGridSkeleton } from '@/presentation/components/cards/CardSkeleton';
 import { AddCardModal } from '@/presentation/components/cards/AddCardModal';
@@ -50,15 +51,25 @@ export function MainApp({
     isFiltered,
   } = useCardFilters(cards);
 
+  // Selection state
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+
   // Modals state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isStudyModalOpen, setIsStudyModalOpen] = useState(false);
   const [isStudyMounted, setIsStudyMounted] = useState(false);
+  const [studyCards, setStudyCards] = useState<SubtitleCard[]>([]);
   const [editingCard, setEditingCard] = useState<SubtitleCard | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
-  const handleOpenStudy = () => {
+  const handleOpenStudy = (customDeck?: SubtitleCard[]) => {
+    const deck = customDeck && customDeck.length > 0
+      ? customDeck
+      : filteredCards.length > 0
+      ? filteredCards
+      : cards;
+    setStudyCards(deck);
     setIsStudyMounted(true);
     setIsStudyModalOpen(true);
   };
@@ -80,6 +91,55 @@ export function MainApp({
     setTimeout(() => {
       setEditingCard(null);
     }, 200);
+  };
+
+  // Selection handlers
+  const handleToggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleSelectAll = () => {
+    if (selectedIds.size === filteredCards.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredCards.map((c) => c.id)));
+    }
+  };
+
+  const handleClearSelection = () => {
+    setSelectedIds(new Set());
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.size === 0) return;
+    if (!confirm(`Bạn có chắc muốn xóa ${selectedIds.size} thẻ đã chọn?`)) return;
+
+    const ids = Array.from(selectedIds);
+    let successCount = 0;
+    for (const id of ids) {
+      try {
+        await deleteCard(id);
+        successCount++;
+      } catch {
+        // continue
+      }
+    }
+    setSelectedIds(new Set());
+    showToast(`Đã xóa ${successCount} thẻ thành công`, 'info');
+  };
+
+  const handleOpenStudySelected = () => {
+    const selectedCards = cards.filter((c) => selectedIds.has(c.id));
+    if (selectedCards.length === 0) return;
+    handleOpenStudy(selectedCards);
   };
 
   // Global search & command palette shortcut (⌘K or Ctrl+K)
@@ -126,6 +186,11 @@ export function MainApp({
   const handleDeleteCard = async (id: string) => {
     try {
       await deleteCard(id);
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
       showToast('Đã xóa câu khỏi danh sách', 'info');
     } catch {
       showToast('Lỗi khi xóa', 'error');
@@ -143,40 +208,54 @@ export function MainApp({
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-page)] text-[var(--text-body)] antialiased font-sans">
-      {/* Integrated Header: Search, Sort & Actions */}
+      {/* Top Navigation Bar */}
       <Header
-        searchQuery={filters.searchQuery}
-        onSearchChange={(q) => updateFilters({ searchQuery: q })}
-        sortBy={filters.sortBy}
-        onSortChange={(sort) => updateFilters({ sortBy: sort })}
-        selectedVideo={filters.selectedVideo}
-        onVideoChange={(vid) => updateFilters({ selectedVideo: vid })}
-        videos={distinctVideos}
-        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onOpenAddModal={() => setIsAddModalOpen(true)}
-        onOpenStudyModal={handleOpenStudy}
+        onOpenStudyModal={() => handleOpenStudy()}
+        onExport={handleExport}
         totalCards={cards.length}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-5">
-        {/* Minimalist Text Tabs: No 4 stat boxes, zero clutter */}
-        <TextTabs
+      {/* Main Content Area matching Extension .main-content (max-w-[1400px]) */}
+      <main className="flex-1 max-w-[1400px] w-full mx-auto px-4 sm:px-7 py-6">
+        {/* Search, Filter Tabs & Sort Controls */}
+        <FilterBar
           currentStatus={filters.status}
           onSelectStatus={(status) => updateFilters({ status })}
           stats={stats}
+          searchQuery={filters.searchQuery}
+          onSearchChange={(q) => updateFilters({ searchQuery: q })}
+          sortBy={filters.sortBy}
+          onSortChange={(sort) => updateFilters({ sortBy: sort })}
+          selectedVideo={filters.selectedVideo}
+          onVideoChange={(vid) => updateFilters({ selectedVideo: vid })}
+          videos={distinctVideos}
           layoutMode={filters.layoutMode}
           onLayoutChange={(layoutMode) => updateFilters({ layoutMode })}
+          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         />
 
-        {/* Card Stream / List */}
+        {/* Sticky Batch Selection Action Bar */}
+        <SelectionBar
+          selectedCount={selectedIds.size}
+          totalVisible={filteredCards.length}
+          isAllSelected={selectedIds.size > 0 && selectedIds.size === filteredCards.length}
+          onToggleSelectAll={handleToggleSelectAll}
+          onOpenStudy={handleOpenStudySelected}
+          onDeleteSelected={handleDeleteSelected}
+          onClearSelection={handleClearSelection}
+        />
+
+        {/* Cards Stream / Grid */}
         {isLoading ? (
           <CardGridSkeleton />
         ) : (
           <CardGrid
             cards={filteredCards}
+            selectedIds={selectedIds}
+            onToggleSelect={handleToggleSelect}
             onToggleFavorite={handleToggleFavorite}
             onEdit={handleOpenEdit}
             onDelete={handleDeleteCard}
@@ -194,7 +273,7 @@ export function MainApp({
         cards={cards}
         filters={filters}
         onUpdateFilters={updateFilters}
-        onOpenStudy={handleOpenStudy}
+        onOpenStudy={() => handleOpenStudy()}
         onOpenAdd={() => setIsAddModalOpen(true)}
         onSelectCard={handleOpenEdit}
         onExport={handleExport}
@@ -221,7 +300,7 @@ export function MainApp({
         <FlashcardModal
           isOpen={isStudyModalOpen}
           onClose={handleCloseStudy}
-          cards={filteredCards.length > 0 ? filteredCards : cards}
+          cards={studyCards.length > 0 ? studyCards : cards}
           onToggleFavorite={handleToggleFavorite}
         />
       )}

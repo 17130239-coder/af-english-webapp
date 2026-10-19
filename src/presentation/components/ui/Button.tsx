@@ -20,11 +20,11 @@ export function Button({
 
   const variantStyles = {
     primary:
-      'bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 shadow-2xs border border-transparent',
+      'bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white shadow-2xs border border-[var(--accent)] font-medium',
     accent:
       'bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white shadow-2xs border border-transparent',
     secondary:
-      'bg-[var(--bg-muted)] hover:bg-[var(--border-default)] text-[var(--text-main)] border border-[var(--border-default)]',
+      'bg-[var(--bg-card)] hover:bg-[var(--bg-muted)] text-[var(--text-main)] border border-[var(--border-default)] hover:border-[var(--border-highlight)] font-medium',
     outline:
       'bg-transparent hover:bg-[var(--bg-muted)] text-[var(--text-body)] hover:text-[var(--text-main)] border border-[var(--border-default)]',
     ghost:
